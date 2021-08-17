@@ -7,6 +7,8 @@ const Stack = createStackNavigator();
 
 // screens
 import WelcomeScreen from '@screens/WelcomeScreen';
+import LoginScreen from '@screens/auth/Login';
+import RegisterScreen from '@screens/auth/Register';
 
 const Application = () => {
   return (
@@ -17,6 +19,20 @@ const Application = () => {
           <Stack.Screen
             name="WelcomeScreen"
             component={WelcomeScreen}
+            options={{
+              animationEnabled: false,
+            }}
+          />
+          <Stack.Screen
+            name="LoginScreen"
+            component={LoginScreen}
+            options={{
+              animationEnabled: false,
+            }}
+          />
+          <Stack.Screen
+            name="RegisterScreen"
+            component={RegisterScreen}
             options={{
               animationEnabled: false,
             }}
