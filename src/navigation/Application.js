@@ -14,11 +14,46 @@ import LoginScreen from '@screens/auth/Login';
 import RegisterScreen from '@screens/auth/Register';
 
 import HomeScreen from '@screens/home/HomeScreen';
+import FriendMap from '@screens/friends/FriendMap';
+import ChatScreen from '@screens/chat/Chat';
+import ProfileScreen from '@screens/profile/Profile';
+
+import Icon from 'react-native-vector-icons/Ionicons';
+
+const screenOptions = (route, color) => {
+  let iconName;
+
+  switch (route.name) {
+    case 'Home':
+      iconName = 'md-home-outline';
+      break;
+    case 'Map':
+      iconName = 'map-outline';
+      break;
+    case 'Chat':
+      iconName = 'chatbubbles-outline';
+      break;
+    case 'Profile':
+      iconName = 'md-person-outline';
+      break;
+    default:
+      break;
+  }
+
+  return <Icon name={iconName} color={color} size={24} />;
+};
 
 function HomeScreenTabs() {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator
+      screenOptions={({route}) => ({
+        tabBarShowLabel: false,
+        tabBarIcon: ({color}) => screenOptions(route, color),
+      })}>
       <Tab.Screen name="Home" component={HomeScreen} />
+      <Tab.Screen name="Map" component={FriendMap} />
+      <Tab.Screen name="Chat" component={ChatScreen} />
+      <Tab.Screen name="Profile" component={ProfileScreen} />
     </Tab.Navigator>
   );
 }
