@@ -29,7 +29,7 @@ const Register = ({navigation}) => {
             confirmPassword: '',
           }}
           validationSchema={signUpValidationSchema}
-          onSubmit={values => console.log(values)}>
+          onSubmit={values => navigation.navigate('HomeScreenTabs')}>
           {({
             handleChange,
             handleBlur,

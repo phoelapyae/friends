@@ -24,7 +24,7 @@ const Login = ({navigation}) => {
         <Formik
           initialValues={{email: '', password: ''}}
           validationSchema={loginValidationSchema}
-          onSubmit={values => console.log(values)}>
+          onSubmit={values => navigation.navigate('HomeScreenTabs')}>
           {({
             handleChange,
             handleBlur,
