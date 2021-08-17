@@ -44,12 +44,13 @@ const styles = StyleSheet.create({
   },
   title: {
     alignSelf: 'center',
-    fontWeight: 'bold',
-    fontSize: 16,
+    fontSize: 18,
+    fontFamily: 'Nunito-SemiBold',
+    marginBottom: 12,
   },
   socialLayout: {
     flex: 1,
-    marginHorizontal: 12,
+    marginHorizontal: 20,
   },
   loginBtn: {
     backgroundColor: 'white',
@@ -67,6 +68,8 @@ const styles = StyleSheet.create({
   },
   authBtnText: {
     alignSelf: 'center',
+    fontFamily: 'Nunito-Bold',
+    fontSize: 15,
   },
 });
 export default WelcomeScreen;
