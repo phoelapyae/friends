@@ -4,6 +4,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {StatusBar, SafeAreaView, StyleSheet} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {NonAuthRoutes} from './routes';
+import gStyles from '@/theme';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -47,6 +48,7 @@ function HomeScreenTabs() {
   return (
     <Tab.Navigator
       screenOptions={({route}) => ({
+        headerShown: false,
         tabBarShowLabel: false,
         tabBarIcon: ({color}) => screenOptions(route, color),
       })}>
