@@ -35,6 +35,12 @@ export default StyleSheet.create({
   mv10: {
     marginVertical: 10,
   },
+  mb8: {
+    marginBottom: 8,
+  },
+  mb12: {
+    marginBottom: 12,
+  },
 
   themeText: {
     fontFamily: 'Nunito-Regular',
