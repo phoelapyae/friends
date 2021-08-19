@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import gStyles from '@/theme';
 import Icon from 'react-native-vector-icons/Ionicons';
+import globalStyles from '@styles/globalStyles';
 
 const HomeScreen = ({navigation}) => {
   let items = [
@@ -47,7 +48,8 @@ const HomeScreen = ({navigation}) => {
     },
     {
       key: 4,
-      content: 'We have travelled alot in amazaon forest!. But we had such a great thing, This cound never forget in my life!',
+      content:
+        'We have travelled alot in amazaon forest!. But we had such a great thing, This cound never forget in my life!',
       profileSrc:
         'https://envato-shoebox-0.imgix.net/8f00/9244-65d5-4144-8e64-a1c87e927e5e/DSC02545.jpg?auto=compress%2Cformat&fit=max&mark=https%3A%2F%2Felements-assets.envato.com%2Fstatic%2Fwatermark2.png&markalign=center%2Cmiddle&markalpha=18&w=500&s=bc2097abaf77d272ba8d3d84cae417f5',
       imageSrc:
@@ -60,6 +62,21 @@ const HomeScreen = ({navigation}) => {
   return (
     <View style={styles.root}>
       <StatusBar barStyle="dark-content" backgroundColor="white" />
+      <View
+        style={[
+          styles.header,
+          globalStyles.justifySpaceBetween,
+          globalStyles.flexRow,
+        ]}>
+        <TouchableOpacity>
+          <Icon name="md-reorder-two" color="#333" size={17} />
+        </TouchableOpacity>
+
+        <Text style={globalStyles.themeTextBold}>Story</Text>
+        <TouchableOpacity>
+          <Icon name="md-notifications-outline" color="#333" size={17}/>
+        </TouchableOpacity>
+      </View>
       <View>
         <ScrollView showsVerticalScrollIndicator={false}>
           {items.map(item => (
@@ -94,7 +111,9 @@ const HomeScreen = ({navigation}) => {
                     <Text style={styles.secondaryReactBtnText}>10</Text>
                   </TouchableOpacity>
                 </View>
-                <TouchableOpacity style={styles.visitBtn}>
+                <TouchableOpacity
+                  style={styles.visitBtn}
+                  onPress={() => navigation.navigate('FeedDetailScreen')}>
                   <Text style={styles.visitText}>View</Text>
                   <Icon name="chevron-forward" size={17} color="#333" />
                 </TouchableOpacity>
@@ -111,6 +130,12 @@ const styles = StyleSheet.create({
   root: {
     flex: 1,
     backgroundColor: '#ddd',
+  },
+  header: {
+    flexDirection: 'row',
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    backgroundColor: '#fff',
   },
   card: {
     backgroundColor: '#fff',

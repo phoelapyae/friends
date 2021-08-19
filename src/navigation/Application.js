@@ -18,6 +18,7 @@ import HomeScreen from '@screens/home/HomeScreen';
 import FriendMap from '@screens/friends/FriendMap';
 import ChatScreen from '@screens/chat/Chat';
 import ProfileScreen from '@screens/profile/Profile';
+import FeedDetailScreen from '@screens/home/FeedDetail';
 
 import Icon from 'react-native-vector-icons/Ionicons';
 
@@ -83,14 +84,14 @@ const Application = () => {
               </React.Fragment>
             ))} */}
 
-          <Stack.Screen
+          {/* <Stack.Screen
             name="WelcomeScreen"
             component={WelcomeScreen}
             options={{
               animationEnabled: false,
             }}
-          />
-          <Stack.Screen
+          /> */}
+          {/* <Stack.Screen
             name="LoginScreen"
             component={LoginScreen}
             options={{
@@ -104,11 +105,18 @@ const Application = () => {
             options={{
               animationEnabled: false,
             }}
-          />
+          /> */}
 
           <Stack.Screen
             name="HomeScreenTabs"
             component={HomeScreenTabs}
+            options={{
+              animationEnabled: false,
+            }}
+          />
+          <Stack.Screen
+            name="FeedDetailScreen"
+            component={FeedDetailScreen}
             options={{
               animationEnabled: false,
             }}
