@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
-import {StatusBar, SafeAreaView, StyleSheet} from 'react-native';
+import {StatusBar, SafeAreaView, StyleSheet, View} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {NonAuthRoutes} from './routes';
 import gStyles from '@/theme';
@@ -50,6 +50,7 @@ function HomeScreenTabs() {
       screenOptions={({route}) => ({
         headerShown: false,
         tabBarShowLabel: false,
+
         tabBarIcon: ({color}) => screenOptions(route, color),
       })}>
       <Tab.Screen name="Home" component={HomeScreen} />
@@ -65,7 +66,10 @@ const Application = () => {
     <NavigationContainer>
       <SafeAreaView style={styles.container}>
         <StatusBar barStyle="dark-content" backgroundColor="white" />
-        <Stack.Navigator screenOptions={{headerShown: false}}>
+        <Stack.Navigator
+          screenOptions={{
+            headerShown: false,
+          }}>
           {/* {NonAuthRoutes &&
             NonAuthRoutes.map((route, i) => (
               <React.Fragment key={i}>

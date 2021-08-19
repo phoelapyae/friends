@@ -36,7 +36,7 @@ const HomeScreen = ({navigation}) => {
     },
     {
       key: 3,
-      content: 'Check out my new work',
+      content: 'Look! It really cool.',
       profileSrc:
         'https://envato-shoebox-0.imgix.net/8f00/9244-65d5-4144-8e64-a1c87e927e5e/DSC02545.jpg?auto=compress%2Cformat&fit=max&mark=https%3A%2F%2Felements-assets.envato.com%2Fstatic%2Fwatermark2.png&markalign=center%2Cmiddle&markalpha=18&w=500&s=bc2097abaf77d272ba8d3d84cae417f5',
       imageSrc:
@@ -47,7 +47,7 @@ const HomeScreen = ({navigation}) => {
     },
     {
       key: 4,
-      content: 'Check out my new work',
+      content: 'We have travelled alot in amazaon forest!. But we had such a great thing, This cound never forget in my life!',
       profileSrc:
         'https://envato-shoebox-0.imgix.net/8f00/9244-65d5-4144-8e64-a1c87e927e5e/DSC02545.jpg?auto=compress%2Cformat&fit=max&mark=https%3A%2F%2Felements-assets.envato.com%2Fstatic%2Fwatermark2.png&markalign=center%2Cmiddle&markalpha=18&w=500&s=bc2097abaf77d272ba8d3d84cae417f5',
       imageSrc:
@@ -60,7 +60,7 @@ const HomeScreen = ({navigation}) => {
   return (
     <View style={styles.root}>
       <StatusBar barStyle="dark-content" backgroundColor="white" />
-      <View style={styles.container}>
+      <View>
         <ScrollView showsVerticalScrollIndicator={false}>
           {items.map(item => (
             <View key={item.key} style={styles.card}>
@@ -110,10 +110,7 @@ const HomeScreen = ({navigation}) => {
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    backgroundColor: '#fff',
-  },
-  container: {
-    paddingHorizontal: 20,
+    backgroundColor: '#ddd',
   },
   card: {
     backgroundColor: '#fff',
@@ -129,20 +126,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-start',
     marginVertical: 12,
+    paddingHorizontal: 20,
   },
   profile: {
     marginLeft: 8,
   },
   cardImgProvider: {
-    shadowColor: gStyles.primaryColor,
+    shadowColor: '#F0F0F0',
     shadowOffset: {
       width: 0,
-      height: 1,
+      height: 20,
     },
     shadowOpacity: 0.5,
-    shadowRadius: 12.35,
+    shadowRadius: 100,
     elevation: 20,
-    borderRadius: 20,
+    paddingHorizontal: 20,
   },
   cardImg: {
     width: '100%',
@@ -151,7 +149,8 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   content: {
-    padding: 12,
+    paddingVertical: 12,
+    paddingHorizontal: 20,
   },
 
   fullName: {
@@ -168,7 +167,8 @@ const styles = StyleSheet.create({
   },
 
   reactionRow: {
-    paddingHorizontal: 6,
+    paddingHorizontal: 12,
+    marginBottom: 12,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
