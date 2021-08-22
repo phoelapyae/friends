@@ -68,18 +68,16 @@ const HomeScreen = ({navigation}) => {
           globalStyles.justifySpaceBetween,
           globalStyles.flexRow,
         ]}>
+        <Text style={[globalStyles.themeTextBold, globalStyles.xlText]}>
+          Friends
+        </Text>
         <TouchableOpacity>
-          <Icon name="md-reorder-two" color="#333" size={17} />
-        </TouchableOpacity>
-
-        <Text style={globalStyles.themeTextBold}>Story</Text>
-        <TouchableOpacity>
-          <Icon name="md-notifications-outline" color="#333" size={17}/>
+          <Icon name="md-notifications-outline" color="#333" size={20} />
         </TouchableOpacity>
       </View>
       <View>
         <ScrollView showsVerticalScrollIndicator={false}>
-          {items.map(item => (
+          {items.reverse().map(item => (
             <View key={item.key} style={styles.card}>
               <View style={styles.profileRow}>
                 <Image source={{uri: item.profileSrc}} style={styles.avatar} />
@@ -129,7 +127,8 @@ const HomeScreen = ({navigation}) => {
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    backgroundColor: '#ddd',
+    backgroundColor: '#fff',
+    paddingBottom: 20,
   },
   header: {
     flexDirection: 'row',
@@ -139,7 +138,7 @@ const styles = StyleSheet.create({
   },
   card: {
     backgroundColor: '#fff',
-    marginBottom: 16,
+    marginBottom: 10,
   },
   avatar: {
     width: 40,

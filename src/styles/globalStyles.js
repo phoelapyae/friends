@@ -73,6 +73,9 @@ export default StyleSheet.create({
   lgText: {
     fontSize: 18,
   },
+  xlText: {
+    fontSize: 20,
+  },
   textAlignCenter: {
     alignSelf: 'center',
   },
