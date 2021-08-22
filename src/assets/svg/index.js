@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Svg, {Path} from 'react-native-svg';
+import Svg, {Path, G} from 'react-native-svg';
 
 export function BackSvg(props) {
   return (

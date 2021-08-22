@@ -10,19 +10,25 @@ import {
 } from 'react-native';
 import gStyles from '@/theme';
 import Icon from 'react-native-vector-icons/Ionicons';
+import EntypoIcon from 'react-native-vector-icons/Entypo';
 import globalStyles from '@styles/globalStyles';
 
 const HomeScreen = ({navigation}) => {
   let items = [
     {
       key: 1,
-      content: 'Check out my new work',
+      content:
+        'Friends ဆိုတဲ့ App လေးတစ်ခုရေးနေတယ်ဗျ။ ပါမယ့် Feature တွေက \n Real time chatting ရယ်၊\n nearby friends ရှာတာရယ်၊\n post တွေတင်လိုရတာရယ်ပေါ့ \n\n Backend ကတော့ Nodejs ကိုသုံးထားတယ်။ Database က Mongo ပေါ့။ app ကတော့ React Native နဲ့ရေးထားပါတယ်။',
       imageSrc:
-        'https://envato-shoebox-0.imgix.net/d2f6/b2c0-902a-4af4-9635-9ef6caa47469/DSC_5395.jpg?auto=compress%2Cformat&fit=max&mark=https%3A%2F%2Felements-assets.envato.com%2Fstatic%2Fwatermark2.png&markalign=center%2Cmiddle&markalpha=18&w=800&s=3a8c9a2592ac1b48d1e3393a9dfa0f0e',
+        'https://res.cloudinary.com/dcx5aeaaz/image/upload/v1629632563/IMG_20210822_175737_919_z2tddy.jpg',
       profileSrc:
         'https://envato-shoebox-0.imgix.net/8f00/9244-65d5-4144-8e64-a1c87e927e5e/DSC02545.jpg?auto=compress%2Cformat&fit=max&mark=https%3A%2F%2Felements-assets.envato.com%2Fstatic%2Fwatermark2.png&markalign=center%2Cmiddle&markalpha=18&w=500&s=bc2097abaf77d272ba8d3d84cae417f5',
       fullName: 'Mr, Smiith',
       createDate: '3 days ago',
+      reaction: [
+        {type: 'wow', count: 50},
+        {type: 'love', count: 20},
+      ],
     },
     {
       key: 2,
@@ -34,6 +40,10 @@ const HomeScreen = ({navigation}) => {
 
       fullName: 'Mr, Smiith',
       createDate: '3 days ago',
+      reaction: [
+        {type: 'love', count: 35},
+        {type: 'peaceful', count: 15},
+      ],
     },
     {
       key: 3,
@@ -45,6 +55,10 @@ const HomeScreen = ({navigation}) => {
 
       fullName: 'Mr, Smiith',
       createDate: '3 days ago',
+      reaction: [
+        {type: 'peaceful', count: 8},
+        {type: 'love', count: 37},
+      ],
     },
     {
       key: 4,
@@ -57,8 +71,70 @@ const HomeScreen = ({navigation}) => {
 
       fullName: 'Mr, Smiith',
       createDate: '3 days ago',
+      reaction: [
+        {type: 'love', count: 85},
+        {type: 'wow', count: 8},
+      ],
     },
   ];
+
+  const renderFirstReactBtn = reactType => {
+    switch (reactType.type) {
+      case 'love':
+        return (
+          <TouchableOpacity style={[styles.flexRow, styles.loveReactionBtn]}>
+            <Icon name="ios-heart" size={17} color="white" />
+
+            <Text style={styles.reactBtnText}>{reactType.count}</Text>
+          </TouchableOpacity>
+        );
+      case 'wow':
+        return (
+          <TouchableOpacity style={[styles.flexRow, styles.starReactionBtn]}>
+            <Icon name="md-star" size={17} color="white" />
+
+            <Text style={styles.reactBtnText}>36</Text>
+          </TouchableOpacity>
+        );
+      case 'peaceful':
+        return (
+          <TouchableOpacity style={[styles.flexRow, styles.LinkReactionBtn]}>
+            <EntypoIcon name="emoji-flirt" size={17} color="white" />
+
+            <Text style={styles.reactBtnText}>36</Text>
+          </TouchableOpacity>
+        );
+    }
+  };
+
+  const renderSecondReactBtn = reactType => {
+    switch (reactType.type) {
+      case 'love':
+        return (
+          <TouchableOpacity style={[styles.flexRow, styles.secondaryReactBtn]}>
+            <Icon name="ios-heart" size={17} color="red" />
+
+            <Text style={styles.secondaryReactBtnText}>{reactType.count}</Text>
+          </TouchableOpacity>
+        );
+      case 'wow':
+        return (
+          <TouchableOpacity style={[styles.flexRow, styles.secondaryReactBtn]}>
+            <Icon name="md-star" size={17} color="#fbba08" />
+
+            <Text style={styles.secondaryReactBtnText}>36</Text>
+          </TouchableOpacity>
+        );
+      case 'peaceful':
+        return (
+          <TouchableOpacity style={[styles.flexRow, styles.secondaryReactBtn]}>
+            <EntypoIcon name="emoji-flirt" size={17} color="#3972d3" />
+
+            <Text style={styles.secondaryReactBtnText}>36</Text>
+          </TouchableOpacity>
+        );
+    }
+  };
   return (
     <View style={styles.root}>
       <StatusBar barStyle="dark-content" backgroundColor="white" />
@@ -96,18 +172,8 @@ const HomeScreen = ({navigation}) => {
               </View>
               <View style={styles.reactionRow}>
                 <View style={styles.flexRow}>
-                  <TouchableOpacity
-                    style={[styles.flexRow, styles.LinkReactionBtn]}>
-                    <Icon name="ios-thumbs-up-sharp" size={17} color="white" />
-
-                    <Text style={styles.reactBtnText}>36</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={[styles.flexRow, styles.secondaryReactBtn]}>
-                    <Icon name="heart" size={17} color="red" />
-
-                    <Text style={styles.secondaryReactBtnText}>10</Text>
-                  </TouchableOpacity>
+                  {item.reaction[0] && renderFirstReactBtn(item.reaction[0])}
+                  {item.reaction[1] && renderSecondReactBtn(item.reaction[1])}
                 </View>
                 <TouchableOpacity
                   style={styles.visitBtn}
@@ -128,7 +194,7 @@ const styles = StyleSheet.create({
   root: {
     flex: 1,
     backgroundColor: '#fff',
-    paddingBottom: 20,
+    paddingBottom: 30,
   },
   header: {
     flexDirection: 'row',
@@ -234,6 +300,24 @@ const styles = StyleSheet.create({
   },
   visitText: {
     fontFamily: 'Nunito-Regular',
+  },
+
+  // reaction
+  starReactionBtn: {
+    backgroundColor: '#fbba08',
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+  },
+  loveReactionBtn: {
+    backgroundColor: 'red',
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 8,
+    paddingHorizontal: 16,
   },
 });
 export default HomeScreen;
