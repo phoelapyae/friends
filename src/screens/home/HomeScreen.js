@@ -38,7 +38,7 @@ const HomeScreen = ({navigation}) => {
         <TouchableOpacity
           style={styles.storyCreateBtn}
           onPress={() => navigation.navigate('StoryCreateScreen')}>
-          <Icon name="md-add" size={30} color={gStyles.primaryColor} />
+          <Icon name="md-add" size={30} color="white" />
         </TouchableOpacity>
       </View>
     </View>
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
   },
 
   storyCreateBtn: {
-    backgroundColor: 'white',
+    backgroundColor: gStyles.primaryColor,
     position: 'absolute',
     width: 60,
     height: 60,
@@ -73,9 +73,6 @@ const styles = StyleSheet.create({
     shadowOffset: {width: 0, height: 2},
     shadowRadius: 100,
     elevation: 4,
-  },
-  storyCreateBtnText: {
-    color: 'white',
   },
 });
 export default HomeScreen;

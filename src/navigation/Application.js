@@ -85,14 +85,14 @@ const Application = () => {
               </React.Fragment>
             ))} */}
 
-          {/* <Stack.Screen
+          <Stack.Screen
             name="WelcomeScreen"
             component={WelcomeScreen}
             options={{
               animationEnabled: false,
             }}
-          /> */}
-          {/* <Stack.Screen
+          />
+          <Stack.Screen
             name="LoginScreen"
             component={LoginScreen}
             options={{
@@ -106,7 +106,7 @@ const Application = () => {
             options={{
               animationEnabled: false,
             }}
-          /> */}
+          />
 
           <Stack.Screen
             name="HomeScreenTabs"

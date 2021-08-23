@@ -3,30 +3,39 @@ import {
   StyleSheet,
   View,
   Text,
-  Image,
   StatusBar,
   TouchableOpacity,
 } from 'react-native';
 import gStyles from '@/theme';
+import {CoupleSvg, LoveSvg} from '@assets/svg';
 
 const WelcomeScreen = ({navigation}) => {
   return (
     <View style={styles.root}>
       <StatusBar barStyle="dark-content" backgroundColor="white" />
 
-      <Image
-        source={require('@assets/images/welcome.jpg')}
-        resizeMode="center"
-        style={styles.image}
-      />
+      <View style={styles.imageRow}>
+        <View style={{position: 'absolute', top: 120}}>
+          <LoveSvg />
+        </View>
 
-      <Text style={styles.title}>Best Social App to make new friends</Text>
+        <View style={{position: 'absolute', top: 50, right: 0}}>
+          <CoupleSvg />
+        </View>
+      </View>
+
+      <Text style={styles.greyTextSm}>Let’s get closer ☺</Text>
+      <Text style={styles.title}>
+        The best place to meet your future partner.
+      </Text>
 
       <View style={styles.socialLayout}>
         <TouchableOpacity
           style={styles.loginBtn}
           onPress={() => navigation.navigate('LoginScreen')}>
-          <Text style={[styles.authBtnText, styles.primaryTextColor]}>Login</Text>
+          <Text style={[styles.authBtnText, styles.primaryTextColor]}>
+            Login
+          </Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.signUpBtn}
@@ -43,14 +52,25 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
-  image: {
-    alignSelf: 'center',
+  imageRow: {
     flex: 2,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginHorizontal: 50,
+  },
+  image: {
+    alignSelf: 'flex-end',
+  },
+  greyTextSm: {
+    alignSelf: 'center',
+    fontSize: 16,
+    marginBottom: 10,
+    fontFamily: 'Nunito-Regular',
   },
   title: {
     alignSelf: 'center',
-    fontSize: 18,
-    fontFamily: 'Nunito-SemiBold',
+    fontSize: 20,
+    fontFamily: 'Nunito-Bold',
     marginBottom: 12,
   },
   socialLayout: {
