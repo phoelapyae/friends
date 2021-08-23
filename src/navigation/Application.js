@@ -19,6 +19,7 @@ import FriendMap from '@screens/friends/FriendMap';
 import ChatScreen from '@screens/chat/Chat';
 import ProfileScreen from '@screens/profile/Profile';
 import FeedDetailScreen from '@screens/home/FeedDetail';
+import StoryCreateScreen from '@screens/home/story/StoryCreateScreen';
 
 import Icon from 'react-native-vector-icons/Ionicons';
 
@@ -117,6 +118,13 @@ const Application = () => {
           <Stack.Screen
             name="FeedDetailScreen"
             component={FeedDetailScreen}
+            options={{
+              animationEnabled: false,
+            }}
+          />
+          <Stack.Screen
+            name="StoryCreateScreen"
+            component={StoryCreateScreen}
             options={{
               animationEnabled: false,
             }}
