@@ -22,7 +22,7 @@ const HomeScreen = ({navigation}) => {
           globalStyles.justifySpaceBetween,
           globalStyles.flexRow,
         ]}>
-        <Text style={[globalStyles.themeTextBold, globalStyles.xlText]}>
+        <Text style={[globalStyles.themeTextBold, globalStyles.lgText]}>
           Friends
         </Text>
         <TouchableOpacity>
