@@ -1,27 +1,14 @@
 import * as React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
-import {StatusBar, SafeAreaView, StyleSheet, View} from 'react-native';
+import {StatusBar, SafeAreaView, StyleSheet} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {NonAuthRoutes} from './routes';
-import gStyles from '@/theme';
+import {NonAuthRoutes, BottomAuthRoutes, AuthStackRoutes} from './routes';
+import Icon from 'react-native-vector-icons/Ionicons';
+import {useAuth} from '@store/useAuth';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
-
-// Screens
-import WelcomeScreen from '@screens/WelcomeScreen';
-import LoginScreen from '@screens/auth/Login';
-import RegisterScreen from '@screens/auth/Register';
-
-import HomeScreen from '@screens/home/HomeScreen';
-import FriendMap from '@screens/friends/FriendMap';
-import ChatScreen from '@screens/chat/Chat';
-import ProfileScreen from '@screens/profile/Profile';
-import FeedDetailScreen from '@screens/home/FeedDetail';
-import StoryCreateScreen from '@screens/home/story/StoryCreateScreen';
-
-import Icon from 'react-native-vector-icons/Ionicons';
 
 const screenOptions = (route, color) => {
   let iconName;
@@ -55,15 +42,22 @@ function HomeScreenTabs() {
 
         tabBarIcon: ({color}) => screenOptions(route, color),
       })}>
-      <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Map" component={FriendMap} />
-      <Tab.Screen name="Chat" component={ChatScreen} />
-      <Tab.Screen name="Profile" component={ProfileScreen} />
+      {BottomAuthRoutes &&
+        BottomAuthRoutes.map(bRoute => (
+          <Tab.Screen
+            name={bRoute.name}
+            component={bRoute.component}
+            key={bRoute.name}
+          />
+        ))}
     </Tab.Navigator>
   );
 }
 
 const Application = () => {
+  const isAuth = useAuth(state => state.isAuth);
+
+  console.log('isAuth', isAuth);
   return (
     <NavigationContainer>
       <SafeAreaView style={styles.container}>
@@ -72,63 +66,41 @@ const Application = () => {
           screenOptions={{
             headerShown: false,
           }}>
-          {/* {NonAuthRoutes &&
-            NonAuthRoutes.map((route, i) => (
-              <React.Fragment key={i}>
+          {Object.keys(isAuth).length < 1 ? (
+            <React.Fragment>
+              {NonAuthRoutes &&
+                NonAuthRoutes.map(route => (
+                  <Stack.Screen
+                    key={route.name}
+                    name={route.name}
+                    component={route.component}
+                    options={{
+                      animationEnabled: false,
+                    }}
+                  />
+                ))}
+            </React.Fragment>
+          ) : (
+            <React.Fragment>
+              <Stack.Screen
+                name="HomeScreenTabs"
+                component={HomeScreenTabs}
+                options={{
+                  animationEnabled: false,
+                }}
+              />
+              {AuthStackRoutes.map(asRoute => (
                 <Stack.Screen
-                  name={route.name}
-                  component={route.component}
+                  key={asRoute.name}
+                  name={asRoute.name}
+                  component={asRoute.component}
                   options={{
                     animationEnabled: false,
                   }}
                 />
-              </React.Fragment>
-            ))} */}
-
-          <Stack.Screen
-            name="WelcomeScreen"
-            component={WelcomeScreen}
-            options={{
-              animationEnabled: false,
-            }}
-          />
-          <Stack.Screen
-            name="LoginScreen"
-            component={LoginScreen}
-            options={{
-              animationEnabled: false,
-            }}
-          />
-
-          <Stack.Screen
-            name="RegisterScreen"
-            component={RegisterScreen}
-            options={{
-              animationEnabled: false,
-            }}
-          />
-
-          <Stack.Screen
-            name="HomeScreenTabs"
-            component={HomeScreenTabs}
-            options={{
-              animationEnabled: false,
-            }}
-          />
-          <Stack.Screen
-            name="FeedDetailScreen"
-            component={FeedDetailScreen}
-            options={{
-              animationEnabled: false,
-            }}
-          />
-          <Stack.Screen
-            name="StoryCreateScreen"
-            component={StoryCreateScreen}
-            options={{
-              animationEnabled: false,
-            }}
-          />
+              ))}
+            </React.Fragment>
+          )}
         </Stack.Navigator>
       </SafeAreaView>
     </NavigationContainer>

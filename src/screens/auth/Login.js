@@ -10,8 +10,11 @@ import {BackSvg} from '@assets/svg';
 import gStyles from '@/theme';
 import {Formik} from 'formik';
 import {loginValidationSchema} from '@utils/validation';
+import {useAuth} from '@store/useAuth';
 
 const Login = ({navigation}) => {
+  const loginAction = useAuth(state => state.login);
+
   return (
     <View style={styles.root}>
       <View style={styles.header}>
@@ -24,7 +27,19 @@ const Login = ({navigation}) => {
         <Formik
           initialValues={{email: '', password: ''}}
           validationSchema={loginValidationSchema}
-          onSubmit={values => navigation.navigate('HomeScreenTabs')}>
+          onSubmit={(values, {setSubmitting}) => {
+            setSubmitting(true);
+            try {
+              loginAction(values);
+              setSubmitting(false);
+
+              // navigation.navigate('HomeScreenTabs');
+            } catch (e) {
+              setSubmitting(false);
+
+              console.log('Login error', e);
+            }
+          }}>
           {({
             handleChange,
             handleBlur,
