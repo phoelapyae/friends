@@ -10,10 +10,10 @@ import {BackSvg} from '@assets/svg';
 import gStyles from '@/theme';
 import {Formik} from 'formik';
 import {loginValidationSchema} from '@utils/validation';
-import {useAuth} from '@store/useAuth';
+import {authStore} from '@store/authStore';
 
 const Login = ({navigation}) => {
-  const loginAction = useAuth(state => state.login);
+  const login = authStore(state => state.login);
 
   return (
     <View style={styles.root}>
@@ -30,10 +30,8 @@ const Login = ({navigation}) => {
           onSubmit={(values, {setSubmitting}) => {
             setSubmitting(true);
             try {
-              loginAction(values);
+              login(values);
               setSubmitting(false);
-
-              // navigation.navigate('HomeScreenTabs');
             } catch (e) {
               setSubmitting(false);
 
@@ -89,7 +87,7 @@ const Login = ({navigation}) => {
                 style={styles.loginBtn}
                 onPress={handleSubmit}
                 disabled={isSubmitting}>
-                <Text style={styles.loginBtnText}>Login</Text>
+                <Text style={styles.loginBtnText}>Sign In</Text>
               </TouchableOpacity>
             </View>
           )}

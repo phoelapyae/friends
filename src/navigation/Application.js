@@ -5,7 +5,7 @@ import {StatusBar, SafeAreaView, StyleSheet} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {NonAuthRoutes, BottomAuthRoutes, AuthStackRoutes} from './routes';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {useAuth} from '@store/useAuth';
+import {useAuth} from '@hooks/useAuth';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -15,6 +15,7 @@ const screenOptions = (route, color) => {
 
   switch (route.name) {
     case 'Home':
+      console.log(route);
       iconName = 'md-home-outline';
       break;
     case 'Map':
@@ -55,9 +56,7 @@ function HomeScreenTabs() {
 }
 
 const Application = () => {
-  const isAuth = useAuth(state => state.isAuth);
-
-  console.log('isAuth', isAuth);
+  const {state} = useAuth();
   return (
     <NavigationContainer>
       <SafeAreaView style={styles.container}>
@@ -66,7 +65,7 @@ const Application = () => {
           screenOptions={{
             headerShown: false,
           }}>
-          {Object.keys(isAuth).length < 1 ? (
+          {!state.token ? (
             <React.Fragment>
               {NonAuthRoutes &&
                 NonAuthRoutes.map(route => (

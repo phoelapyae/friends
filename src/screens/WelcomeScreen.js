@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
     marginVertical: 12,
     padding: 16,
     borderRadius: 20,
-    borderWidth: 2,
+    borderWidth: 1,
     borderColor: '#333',
   },
   signUpBtn: {
