@@ -10,8 +10,10 @@ import {
 import globalStyles from '../../styles/globalStyles';
 import gTheme from '@/theme';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {useAuth} from '@hooks/useAuth';
 
 const Profile = ({navigation}) => {
+  const {auth} = useAuth();
   return (
     <View style={styles.root}>
       <StatusBar barStyle="dark-content" backgroundColor="white" />
@@ -110,6 +112,19 @@ const Profile = ({navigation}) => {
               globalStyles.textWhite,
             ]}>
             Follow
+          </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={[styles.followBtn, globalStyles.mv10]}
+          onPress={() => auth.logout()}>
+          <Text
+            style={[
+              globalStyles.themeTextBold,
+              globalStyles.textAlignCenter,
+              globalStyles.textWhite,
+            ]}>
+            Logout
           </Text>
         </TouchableOpacity>
       </View>

@@ -1,17 +1,27 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   StyleSheet,
   View,
   Text,
   TextInput,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
 import {BackSvg} from '@assets/svg';
 import gStyles from '@/theme';
+import globalStyles from '@styles/globalStyles';
 import {Formik} from 'formik';
 import {signUpValidationSchema} from '@utils/validation';
+import {authStore} from '@store/authStore';
+import shallow from 'zustand/shallow';
 
 const Register = ({navigation}) => {
+  const [signUp, loading] = authStore(
+    state => [state.signUp, state.loading],
+    shallow,
+  );
+  const [errorMsg, setErrorMsg] = useState('');
+
   return (
     <View style={styles.root}>
       <View style={styles.header}>
@@ -20,7 +30,15 @@ const Register = ({navigation}) => {
         </TouchableOpacity>
       </View>
       <View style={styles.body}>
-        <Text style={styles.title}>Sign Up</Text>
+        <View
+          style={[
+            globalStyles.flexRow,
+            globalStyles.justifySpaceBetween,
+            globalStyles.flexRowAlignCenter,
+          ]}>
+          <Text style={styles.title}>Sign Up</Text>
+          <Text style={globalStyles.errorText}>{errorMsg || errorMsg}</Text>
+        </View>
         <Formik
           initialValues={{
             fullName: '',
@@ -29,7 +47,24 @@ const Register = ({navigation}) => {
             confirmPassword: '',
           }}
           validationSchema={signUpValidationSchema}
-          onSubmit={values => navigation.navigate('HomeScreenTabs')}>
+          onSubmit={(values, {setSubmitting}) => {
+            setSubmitting(true);
+            const payload = {
+              fullName: values.fullName,
+              email: values.email,
+              password: values.password,
+            };
+
+            setErrorMsg('');
+            signUp(payload)
+              .then(() => {
+                setSubmitting(false);
+              })
+              .catch(error => {
+                setErrorMsg(error);
+                setSubmitting(false);
+              });
+          }}>
           {({
             handleChange,
             handleBlur,
@@ -104,11 +139,18 @@ const Register = ({navigation}) => {
                   <Text style={styles.hrefTextBold}>Login Here</Text>
                 </TouchableOpacity>
               </View>
+
               <TouchableOpacity
                 style={styles.loginBtn}
                 onPress={handleSubmit}
                 disabled={isSubmitting}>
-                <Text style={styles.loginBtnText}>Sign Up</Text>
+                <Text style={styles.loginBtnText}>
+                  {loading ? (
+                    <ActivityIndicator size="large" color="#fff" />
+                  ) : (
+                    'Sign Up'
+                  )}
+                </Text>
               </TouchableOpacity>
             </View>
           )}
@@ -159,7 +201,8 @@ const styles = StyleSheet.create({
   loginBtn: {
     borderRadius: 15,
     marginVertical: 6,
-    padding: 15,
+    height: 50,
+    justifyContent: 'center',
     backgroundColor: gStyles.primaryColor,
   },
   loginBtnText: {

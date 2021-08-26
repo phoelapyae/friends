@@ -4,12 +4,15 @@ import friends from '../api';
 
 export const authStore = create(set => ({
   login: async values => {
+    set({loading: true});
     try {
       const {data} = await friends.post('/auth/signin', values);
       await AsyncStorage.setItem('@Authorization', JSON.stringify(data.token));
-      set({token: data.token});
+      set({token: data.token, loading: false});
     } catch (error) {
-      console.log('error', error);
+      set({loading: false});
+      const {data} = error.response;
+      throw data.errors.message;
     }
   },
 
@@ -18,9 +21,11 @@ export const authStore = create(set => ({
     try {
       const {data} = await friends.post('/auth/signup', values);
       await AsyncStorage.setItem('@Authorization', JSON.stringify(data.token));
-      set({token: data.token});
+      set({token: data.token, loading: false});
     } catch (error) {
       set({loading: false});
+      const {data} = error.response;
+      throw data.errors.message;
     }
   },
 
@@ -28,7 +33,7 @@ export const authStore = create(set => ({
     try {
       await AsyncStorage.removeItem('@Authorization');
       set({
-        user: undefined,
+        token: undefined,
       });
     } catch (e) {
       console.log('Logout Error', e);
@@ -37,7 +42,7 @@ export const authStore = create(set => ({
 
   setToken: token => set({token}),
 
-  setLoading: loading => set({loading}),
+  loading: false,
 
   token: undefined,
 }));

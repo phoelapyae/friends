@@ -19,9 +19,7 @@ export const signUpValidationSchema = yup.object().shape({
     .required('Email Address is Required'),
   password: yup
     .string()
-    .matches(/\w*[a-z]\w*/, 'Password must have a small letter')
     .matches(/\w*[A-Z]\w*/, 'Password must have a capital letter')
-    .matches(/\d/, 'Password must have a number')
     .matches(
       /[!@#$%^&*()\-_"=+{}; :,<.>]/,
       'Password must have a special character',

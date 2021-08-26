@@ -11,10 +11,7 @@ export function useAuth() {
 
   const state = authStore(({token, loading}) => ({token, loading}));
 
-  const [setToken, setLoading] = authStore(state => [
-    state.setToken,
-    state.setLoading,
-  ]);
+  const setToken = authStore(state => [state.setToken]);
 
   React.useEffect(() => {
     (async () => {
@@ -22,8 +19,6 @@ export function useAuth() {
       if (token) {
         setToken(JSON.parse(token));
       }
-
-      setLoading(false);
     })();
   }, []);
 

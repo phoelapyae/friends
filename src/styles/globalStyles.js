@@ -85,4 +85,9 @@ export default StyleSheet.create({
   textWhite: {
     color: 'white',
   },
+  errorText: {
+    color: 'red',
+    fontFamily: 'Nunito-Regular',
+    fontSize: 15,
+  },
 });

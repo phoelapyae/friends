@@ -12,19 +12,17 @@ const Stack = createStackNavigator();
 
 const screenOptions = (route, color) => {
   let iconName;
-
   switch (route.name) {
-    case 'Home':
-      console.log(route);
+    case 'HomeScreen':
       iconName = 'md-home-outline';
       break;
-    case 'Map':
+    case 'FriendMap':
       iconName = 'map-outline';
       break;
-    case 'Chat':
+    case 'ChatScreen':
       iconName = 'chatbubbles-outline';
       break;
-    case 'Profile':
+    case 'ProfileScreen':
       iconName = 'md-person-outline';
       break;
     default:

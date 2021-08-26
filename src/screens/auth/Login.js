@@ -1,19 +1,27 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   StyleSheet,
   View,
   Text,
   TextInput,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
 import {BackSvg} from '@assets/svg';
 import gStyles from '@/theme';
+import globalStyles from '@styles/globalStyles';
 import {Formik} from 'formik';
 import {loginValidationSchema} from '@utils/validation';
 import {authStore} from '@store/authStore';
+import shallow from 'zustand/shallow';
 
 const Login = ({navigation}) => {
-  const login = authStore(state => state.login);
+  const [login, loading] = authStore(
+    state => [state.login, state.loading],
+    shallow,
+  );
+
+  const [errorMsg, setErrorMsg] = useState('');
 
   return (
     <View style={styles.root}>
@@ -23,20 +31,29 @@ const Login = ({navigation}) => {
         </TouchableOpacity>
       </View>
       <View style={styles.body}>
-        <Text style={styles.title}>Login</Text>
+        <View
+          style={[
+            globalStyles.flexRow,
+            globalStyles.justifySpaceBetween,
+            globalStyles.flexRowAlignCenter,
+          ]}>
+          <Text style={styles.title}>Login</Text>
+          <Text style={globalStyles.errorText}>{errorMsg || errorMsg}</Text>
+        </View>
         <Formik
           initialValues={{email: '', password: ''}}
           validationSchema={loginValidationSchema}
           onSubmit={(values, {setSubmitting}) => {
             setSubmitting(true);
-            try {
-              login(values);
-              setSubmitting(false);
-            } catch (e) {
-              setSubmitting(false);
-
-              console.log('Login error', e);
-            }
+            setErrorMsg('');
+            login(values)
+              .then(() => {
+                setSubmitting(false);
+              })
+              .catch(error => {
+                setErrorMsg(error);
+                setSubmitting(false);
+              });
           }}>
           {({
             handleChange,
@@ -87,7 +104,13 @@ const Login = ({navigation}) => {
                 style={styles.loginBtn}
                 onPress={handleSubmit}
                 disabled={isSubmitting}>
-                <Text style={styles.loginBtnText}>Sign In</Text>
+                <Text style={styles.loginBtnText}>
+                  {loading ? (
+                    <ActivityIndicator size="large" color="#fff" />
+                  ) : (
+                    'Sign In'
+                  )}
+                </Text>
               </TouchableOpacity>
             </View>
           )}
@@ -138,7 +161,8 @@ const styles = StyleSheet.create({
   loginBtn: {
     borderRadius: 15,
     marginVertical: 6,
-    padding: 15,
+    height: 50,
+    justifyContent: 'center',
     backgroundColor: gStyles.primaryColor,
   },
   loginBtnText: {
