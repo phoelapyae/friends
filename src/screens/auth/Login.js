@@ -43,15 +43,15 @@ const Login = ({navigation}) => {
         <Formik
           initialValues={{email: '', password: ''}}
           validationSchema={loginValidationSchema}
-          onSubmit={(values, {setSubmitting}) => {
+          onSubmit={async (values, {setSubmitting}) => {
             setSubmitting(true);
             setErrorMsg('');
-            login(values)
+            await login(values)
               .then(() => {
                 setSubmitting(false);
               })
               .catch(error => {
-                setErrorMsg(error);
+                setErrorMsg(error ? error : null);
                 setSubmitting(false);
               });
           }}>

@@ -47,7 +47,7 @@ const Register = ({navigation}) => {
             confirmPassword: '',
           }}
           validationSchema={signUpValidationSchema}
-          onSubmit={(values, {setSubmitting}) => {
+          onSubmit={async (values, {setSubmitting}) => {
             setSubmitting(true);
             const payload = {
               fullName: values.fullName,
@@ -56,12 +56,12 @@ const Register = ({navigation}) => {
             };
 
             setErrorMsg('');
-            signUp(payload)
+            await signUp(payload)
               .then(() => {
                 setSubmitting(false);
               })
               .catch(error => {
-                setErrorMsg(error);
+                setErrorMsg(error ? error : null);
                 setSubmitting(false);
               });
           }}>

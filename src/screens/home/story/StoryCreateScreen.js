@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   StyleSheet,
   View,
@@ -12,6 +12,7 @@ import globalStyles from '@styles/globalStyles';
 import Icon from 'react-native-vector-icons/Ionicons';
 import gStyles from '@/theme';
 import Uploader from '@components/Uploader';
+import {storyStore} from '@store/storyStore';
 
 const CurrentUserProfile = () => {
   return (
@@ -42,6 +43,13 @@ const CurrentUserProfile = () => {
 };
 
 const StoryCreateScreen = ({navigation}) => {
+  const createStory = storyStore(state => state.createStory);
+  const [content, setContent] = useState('');
+
+  const onSubmitStory = async () => {
+    const payload = {content};
+    await createStory(payload);
+  };
   return (
     <View style={styles.root}>
       <StatusBar barStyle="dark-content" backgroundColor="white" />
@@ -64,7 +72,7 @@ const StoryCreateScreen = ({navigation}) => {
             Create Story
           </Text>
         </View>
-        <TouchableOpacity style={styles.disableBtn}>
+        <TouchableOpacity style={styles.disableBtn} onPress={onSubmitStory}>
           <Text>POST</Text>
         </TouchableOpacity>
       </View>
@@ -83,6 +91,8 @@ const StoryCreateScreen = ({navigation}) => {
           placeholder="Write down your story..."
           multiline
           style={styles.textField}
+          value={content}
+          onChangeText={txt => setContent(txt)}
         />
       </View>
       {/* Body */}

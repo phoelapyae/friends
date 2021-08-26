@@ -7,7 +7,7 @@ app.getToken = async () => {
   axios.defaults.baseURL = 'http://friendsmm.herokuapp.com/api';
   axios.defaults.headers.post['Content-Type'] = 'application/json';
   const AUTH_TOKEN = await AsyncStorage.getItem('@Authorization');
-  axios.defaults.headers.common.Authorization = AUTH_TOKEN;
+  axios.defaults.headers['x-access-token'] = JSON.parse(AUTH_TOKEN);
 };
 
 app.setToken = async token => {
