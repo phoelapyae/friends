@@ -8,6 +8,27 @@ A Tiny Social Media for teenagers.<br />
 
 ## Demo
 
-<p align="center" style="height: 500">
-  <img src="https://github.com/nayyaung9/friends/blob/main/demo/homescreen.jpg?raw=true" style="width: 100px; height: 100%;object-fit: cover">
-</p>
+### Story Screen
+
+<div style="height: 400px; margin: auto;">
+  <img src="https://github.com/nayyaung9/friends/blob/main/demo/homescreen.jpg?raw=true" style="width: 100%; height: 100%;object-fit: contain">
+</div>
+
+### Map Screen
+
+<div style="height: 400px; margin: auto;">
+  <img src="https://github.com/nayyaung9/friends/blob/main/demo/userlistonmap.jpg?raw=true" style="width: 100%; height: 100%;object-fit: contain">
+</div>
+
+<br />
+<div style="height: 400px; margin: auto;">
+  <img src="https://github.com/nayyaung9/friends/blob/main/demo/userdetailonmap.jpg?raw=true" style="width: 100%; height: 100%;object-fit: contain">
+</div>
+
+### Story Create Screen
+
+<div style="height: 400px; margin: auto;">
+  <img src="https://github.com/nayyaung9/friends/blob/main/demo/create-story.jpg?raw=true" style="width: 100%; height: 100%;object-fit: contain">
+</div>
+
+More screens are coming soon & I am developing with React Native & NodeJs.
