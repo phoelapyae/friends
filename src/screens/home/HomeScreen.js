@@ -56,8 +56,7 @@ const HomeScreen = ({navigation}) => {
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    backgroundColor: '#fff',
-    paddingBottom: 30,
+    backgroundColor: '#f0f2f5',
   },
   header: {
     flexDirection: 'row',

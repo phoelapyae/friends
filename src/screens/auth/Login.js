@@ -47,14 +47,14 @@ const Login = ({navigation}) => {
           onSubmit={async (values, {setSubmitting}) => {
             setSubmitting(true);
             setErrorMsg('');
-            await login(values)
-              .then(() => {
-                setSubmitting(false);
-              })
-              .catch(error => {
-                setErrorMsg(error ? error : null);
-                setSubmitting(false);
-              });
+            try {
+              await login(values);
+              setSubmitting(false);
+            } catch (e) {
+              console.log('ERRRORR', e);
+              setErrorMsg(e ? e : null);
+              setSubmitting(false);
+            }
           }}>
           {({
             handleChange,
@@ -156,6 +156,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     borderWidth: 1,
     borderColor: '#F0F0F0',
+    fontFamily: 'Nunito-Regular',
     paddingLeft: 12,
   },
   hrefLayout: {

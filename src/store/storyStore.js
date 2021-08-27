@@ -20,7 +20,6 @@ export const storyStore = create(set => ({
     set({loading: true});
     try {
       const {data} = await friends.get('/story/all');
-      console.log(data);
       set({loading: false, stories: data.stories});
     } catch (error) {
       set({loading: false});

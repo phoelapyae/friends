@@ -8,7 +8,6 @@ import moment from 'moment';
  * This Component is used in homescreen as story card
  */
 const StoryCard = ({navigation, stories}) => {
-  console.log('story card', stories);
   const renderFirstReactBtn = reactType => {
     switch (reactType.type) {
       case 'love':
@@ -16,7 +15,7 @@ const StoryCard = ({navigation, stories}) => {
           <TouchableOpacity style={[styles.flexRow, styles.loveReactionBtn]}>
             <Icon name="ios-heart" size={17} color="white" />
 
-            <Text style={styles.reactBtnText}>{reactType.count}</Text>
+            <Text style={styles.reactBtnText}>100</Text>
           </TouchableOpacity>
         );
       case 'wow':
@@ -67,13 +66,20 @@ const StoryCard = ({navigation, stories}) => {
     }
   };
 
+  const imageSrc =
+    'https://envato-shoebox-0.imgix.net/72a9/db87-232b-459e-afd7-007e5328fff9/Sam_Kladska_18-06-19_165_retus_final2.jpg?auto=compress%2Cformat&fit=max&mark=https%3A%2F%2Felements-assets.envato.com%2Fstatic%2Fwatermark2.png&markalign=center%2Cmiddle&markalpha=18&w=800&s=e2982ec7f2d92a11fceb3fb2ba47cdb4';
   return (
     <React.Fragment>
       {stories &&
         stories.map(story => (
-          <View key={story.key} style={styles.card}>
+          <View key={story._id} style={styles.card}>
             <View style={styles.profileRow}>
-              {/* <Image source={{uri: story.profileSrc}} style={styles.avatar} /> */}
+              <Image
+                source={{
+                  uri: 'https://image.freepik.com/free-photo/happy-businessman-fist-pump-shouting-yes-winning-prize-triumphing-victory_176420-21742.jpg',
+                }}
+                style={styles.avatar}
+              />
 
               <View style={styles.profile}>
                 <Text style={styles.fullName}>{story.user.fullName}</Text>
@@ -82,11 +88,14 @@ const StoryCard = ({navigation, stories}) => {
                 </Text>
               </View>
             </View>
-            {story.imageSrc && (
+            {/* {story.imageSrc && (
               <View style={styles.cardImgProvider}>
                 <Image source={{uri: story.imageSrc}} style={styles.cardImg} />
               </View>
-            )}
+            )} */}
+            <View style={styles.cardImgProvider}>
+              <Image source={{uri: imageSrc}} style={styles.cardImg} />
+            </View>
 
             <View style={styles.content}>
               <Text style={styles.contentText}>{story.content}</Text>
@@ -96,6 +105,10 @@ const StoryCard = ({navigation, stories}) => {
                 {story.reaction[0] && renderFirstReactBtn(story.reaction[0])}
                 {story.reaction[1] && renderSecondReactBtn(story.reaction[1])}
               </View> */}
+              <View style={styles.flexRow}>
+                {renderFirstReactBtn({type: 'love'})}
+                {renderSecondReactBtn({type: 'wow'})}
+              </View>
               <TouchableOpacity
                 style={styles.visitBtn}
                 onPress={() => navigation.navigate('FeedDetailScreen')}>
@@ -130,19 +143,19 @@ const styles = StyleSheet.create({
     marginLeft: 8,
   },
   cardImgProvider: {
-    shadowColor: '#F0F0F0',
+    shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 20,
     },
-    shadowOpacity: 0.5,
+    shadowOpacity: 0.1,
     shadowRadius: 100,
-    elevation: 20,
+    elevation: 10,
     paddingHorizontal: 20,
   },
   cardImg: {
     width: '100%',
-    height: 250,
+    height: 200,
     resizeMode: 'cover',
     borderRadius: 20,
   },
@@ -157,7 +170,7 @@ const styles = StyleSheet.create({
   },
   dateTimeText: {
     fontFamily: 'Nunito-Light',
-    color: '#ddd',
+    color: '#333',
     opacity: 0.7,
   },
   contentText: {
@@ -216,16 +229,16 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingVertical: 8,
-    paddingHorizontal: 16,
+    width: 60,
+    height: 26,
   },
   loveReactionBtn: {
     backgroundColor: 'red',
     borderRadius: 20,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingVertical: 8,
-    paddingHorizontal: 16,
+    width: 60,
+    height: 26,
   },
 });
 export default StoryCard;

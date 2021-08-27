@@ -9,6 +9,7 @@ import {
   Image,
   ScrollView,
   ActivityIndicator,
+  ToastAndroid,
 } from 'react-native';
 import globalStyles from '@styles/globalStyles';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -54,8 +55,13 @@ const StoryCreateScreen = ({navigation}) => {
 
   const onSubmitStory = async () => {
     const payload = {content};
-    console.log(payload);
-    await createStory(payload);
+    await createStory(payload)
+      .then(() => {
+        ToastAndroid.show('Story Created Successfully', ToastAndroid.SHORT);
+      })
+      .catch(e => {
+        ToastAndroid.show('Posting Story Failed!', ToastAndroid.SHORT);
+      });
   };
 
   const hasNull = () => {
@@ -70,11 +76,7 @@ const StoryCreateScreen = ({navigation}) => {
       <View style={[styles.header, globalStyles.justifySpaceBetween]}>
         <View style={[globalStyles.flexRow, globalStyles.flexRowAlignCenter]}>
           <TouchableOpacity onPress={() => navigation.goBack(null)}>
-            <Icon
-              name="md-chevron-back"
-              color={gStyles.primaryColor}
-              size={22}
-            />
+            <Icon name="md-chevron-back" color="#333" size={22} />
           </TouchableOpacity>
           <Text
             style={[
@@ -142,7 +144,7 @@ const styles = StyleSheet.create({
     marginLeft: 12,
   },
   disableBtn: {
-    backgroundColor: '#F8F8FA',
+    backgroundColor: '#ddd',
     borderRadius: 10,
     height: 35,
     width: 80,

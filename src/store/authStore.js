@@ -40,6 +40,10 @@ export const authStore = create(set => ({
       set({token: data.token, loading: false});
     } catch (error) {
       set({loading: false});
+      if (error.message == 'Network Error') {
+        throw 'Network Error';
+      }
+
       const {data} = error.response;
       throw data.errors.message;
     }
@@ -53,6 +57,10 @@ export const authStore = create(set => ({
       set({token: data.token, loading: false});
     } catch (error) {
       set({loading: false});
+      if (error.message == 'Network Error') {
+        throw 'Network Error';
+      }
+
       const {data} = error.response;
       throw data.errors.message;
     }
