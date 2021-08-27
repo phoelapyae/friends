@@ -7,28 +7,27 @@ import {
   GraphRequestManager,
   LoginManager,
 } from 'react-native-fbsdk';
-import {Alert} from 'react-native';
 
 const getInfoFromToken = token => {
-  const PROFILE_REQUEST_PARAMS = {
-    fields: {
-      string: 'id,name,email',
-    },
-  };
-  const profileRequest = new GraphRequest(
-    '/me',
-    {token, parameters: PROFILE_REQUEST_PARAMS},
-    (error, user) => {
-      if (error) {
-        console.log('ERRROR', error);
-        throw error;
-      } else {
-        Alert.alert(JSON.stringify(user));
-        console.log('result:', user);
-      }
-    },
-  );
-  new GraphRequestManager().addRequest(profileRequest).start();
+  return new Promise((resolve, reject) => {
+    const PROFILE_REQUEST_PARAMS = {
+      fields: {
+        string: 'email,name, picture',
+      },
+    };
+    const profileRequest = new GraphRequest(
+      '/me',
+      {token, parameters: PROFILE_REQUEST_PARAMS},
+      (error, user) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(user);
+        }
+      },
+    );
+    new GraphRequestManager().addRequest(profileRequest).start();
+  });
 };
 
 export const authStore = create(set => ({
@@ -77,27 +76,51 @@ export const authStore = create(set => ({
     }
   },
 
+  /**
+   * FacebookLogin function do get user email, picture & name from facebook api.
+   * and pass into authWithSocial function to authenticate with our server.
+   */
   facebookLogin: async () => {
     try {
-      LoginManager.logInWithPermissions(['public_profile']).then(
-        login => {
-          console.log('login', login);
-          if (login.isCancelled) {
-            console.log('Login cancelled');
-          } else {
-            AccessToken.getCurrentAccessToken().then(data => {
-              const accessToken = data.accessToken.toString();
-              getInfoFromToken(accessToken);
+      const login = LoginManager.logInWithPermissions([
+        'public_profile',
+        'email',
+      ]);
+
+      if (login) {
+        if (login.isCancelled) {
+          console.log('Login cancelled');
+        } else {
+          AccessToken.getCurrentAccessToken().then(data => {
+            const accessToken = data.accessToken.toString();
+            getInfoFromToken(accessToken).then(userInfo => {
+              const payload = {
+                email: userInfo.email,
+                fullName: userInfo.name,
+                avatar: userInfo.picture.data.url,
+              };
+              set(state => state.authWithSocial(payload));
             });
-          }
-        },
-        error => {
-          console.log('Login fail with error: ' + error);
-        },
-      );
+          });
+        }
+      }
     } catch (e) {
-      console.log('login manager', e);
       throw e;
+    }
+  },
+
+  authWithSocial: async payload => {
+    try {
+      const {data} = await friends.post('/auth/social/authentication', payload);
+      await AsyncStorage.setItem('@Authorization', JSON.stringify(data.token));
+      set({token: data.token});
+    } catch (error) {
+      if (error.message == 'Network Error') {
+        throw 'Network Error';
+      }
+
+      const {data} = error.response;
+      throw data.errors.message;
     }
   },
 

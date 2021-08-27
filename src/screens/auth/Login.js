@@ -24,6 +24,16 @@ const Login = ({navigation}) => {
 
   const [errorMsg, setErrorMsg] = useState('');
 
+  const loginWithFacebook = async () => {
+    setErrorMsg('');
+    try {
+      await facebookLogin();
+    } catch (e) {
+      setErrorMsg(e);
+      console.log(e);
+    }
+  };
+
   return (
     <View style={styles.root}>
       <View style={styles.header}>
@@ -51,8 +61,7 @@ const Login = ({navigation}) => {
               await login(values);
               setSubmitting(false);
             } catch (e) {
-              console.log('ERRRORR', e);
-              setErrorMsg(e ? e : null);
+              setErrorMsg(e);
               setSubmitting(false);
             }
           }}>
@@ -115,7 +124,7 @@ const Login = ({navigation}) => {
 
         <TouchableOpacity
           style={{alignItems: 'center'}}
-          onPress={() => facebookLogin()}>
+          onPress={loginWithFacebook}>
           <FacebookSvg />
         </TouchableOpacity>
 

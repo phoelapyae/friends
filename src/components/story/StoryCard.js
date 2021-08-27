@@ -66,6 +66,8 @@ const StoryCard = ({navigation, stories}) => {
     }
   };
 
+  const profileDefaultImg =
+    'https://images.unsplash.com/photo-1608889175123-8ee362201f81?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80';
   const imageSrc =
     'https://envato-shoebox-0.imgix.net/72a9/db87-232b-459e-afd7-007e5328fff9/Sam_Kladska_18-06-19_165_retus_final2.jpg?auto=compress%2Cformat&fit=max&mark=https%3A%2F%2Felements-assets.envato.com%2Fstatic%2Fwatermark2.png&markalign=center%2Cmiddle&markalpha=18&w=800&s=e2982ec7f2d92a11fceb3fb2ba47cdb4';
   return (
@@ -76,7 +78,9 @@ const StoryCard = ({navigation, stories}) => {
             <View style={styles.profileRow}>
               <Image
                 source={{
-                  uri: 'https://image.freepik.com/free-photo/happy-businessman-fist-pump-shouting-yes-winning-prize-triumphing-victory_176420-21742.jpg',
+                  uri: story.user.avatar
+                    ? story.user.avatar
+                    : profileDefaultImg,
                 }}
                 style={styles.avatar}
               />

@@ -6,6 +6,7 @@ import {
   StatusBar,
   ScrollView,
   TouchableOpacity,
+  RefreshControl,
 } from 'react-native';
 import StoryCard from '@components/story/StoryCard';
 import gStyles from '@/theme';
@@ -19,6 +20,13 @@ const HomeScreen = ({navigation}) => {
 
   React.useEffect(() => {
     fetchStories();
+  }, []);
+
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    fetchStories().then(() => setRefreshing(false));
   }, []);
 
   return (
@@ -38,7 +46,11 @@ const HomeScreen = ({navigation}) => {
         </TouchableOpacity>
       </View>
       <View style={styles.container}>
-        <ScrollView showsVerticalScrollIndicator={false}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }>
           <StoryCard navigation={navigation} stories={stories} />
         </ScrollView>
 
