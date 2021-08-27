@@ -7,12 +7,15 @@ import {
   TouchableOpacity,
   TextInput,
   Image,
+  ScrollView,
+  ActivityIndicator,
 } from 'react-native';
 import globalStyles from '@styles/globalStyles';
 import Icon from 'react-native-vector-icons/Ionicons';
 import gStyles from '@/theme';
 import Uploader from '@components/Uploader';
 import {storyStore} from '@store/storyStore';
+import shallow from 'zustand/shallow';
 
 const CurrentUserProfile = () => {
   return (
@@ -43,13 +46,23 @@ const CurrentUserProfile = () => {
 };
 
 const StoryCreateScreen = ({navigation}) => {
-  const createStory = storyStore(state => state.createStory);
+  const [createStory, loading] = storyStore(
+    state => [state.createStory, state.loading],
+    shallow,
+  );
   const [content, setContent] = useState('');
 
   const onSubmitStory = async () => {
     const payload = {content};
+    console.log(payload);
     await createStory(payload);
   };
+
+  const hasNull = () => {
+    if (!content) return false;
+    return true;
+  };
+
   return (
     <View style={styles.root}>
       <StatusBar barStyle="dark-content" backgroundColor="white" />
@@ -72,28 +85,38 @@ const StoryCreateScreen = ({navigation}) => {
             Create Story
           </Text>
         </View>
-        <TouchableOpacity style={styles.disableBtn} onPress={onSubmitStory}>
-          <Text>POST</Text>
+        <TouchableOpacity
+          style={!hasNull() ? styles.disableBtn : styles.submitBtn}
+          disabled={!hasNull()}
+          onPress={onSubmitStory}>
+          {loading ? (
+            <ActivityIndicator size="small" color="#fff" />
+          ) : (
+            <Text style={styles.btnText}>POST</Text>
+          )}
         </TouchableOpacity>
       </View>
       {/* Header */}
 
       {/* Body */}
       <View style={styles.container}>
-        <CurrentUserProfile />
-
-        <Uploader
-          onPick={files => {
-            console.log(files);
-          }}
-        />
-        <TextInput
-          placeholder="Write down your story..."
-          multiline
-          style={styles.textField}
-          value={content}
-          onChangeText={txt => setContent(txt)}
-        />
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <CurrentUserProfile />
+          <TextInput
+            placeholder="Write down your story..."
+            multiline
+            editable
+            textAlignVertical="top"
+            style={styles.textField}
+            value={content}
+            onChangeText={txt => setContent(txt)}
+          />
+          <Uploader
+            onPick={files => {
+              console.log(files);
+            }}
+          />
+        </ScrollView>
       </View>
       {/* Body */}
     </View>
@@ -104,7 +127,7 @@ const styles = StyleSheet.create({
   root: {
     flex: 1,
     backgroundColor: '#fff',
-    paddingBottom: 30,
+    paddingBottom: 10,
   },
   header: {
     flexDirection: 'row',
@@ -120,26 +143,42 @@ const styles = StyleSheet.create({
   },
   disableBtn: {
     backgroundColor: '#F8F8FA',
-    borderRadius: 15,
-    paddingVertical: 8,
-    paddingHorizontal: 14,
+    borderRadius: 10,
+    height: 35,
+    width: 80,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  submitBtn: {
+    backgroundColor: gStyles.primaryColor,
+    borderRadius: 10,
+    height: 35,
+    width: 80,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
   },
   container: {
+    flex: 1,
     paddingHorizontal: 12,
   },
   textField: {
-    fontSize: 19,
+    fontSize: 18,
     fontFamily: 'Nunito-Regular',
+    flex: 2,
+    justifyContent: 'flex-start',
   },
   uploadSpace: {
     backgroundColor: '#F8F8FA',
     height: 200,
+    flex: 1,
     borderRadius: 15,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  btnText: {
+    color: '#fff',
   },
 });
 

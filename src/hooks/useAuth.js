@@ -9,9 +9,9 @@ export function useAuth() {
     logout,
   }));
 
-  const state = authStore(({token, loading}) => ({token, loading}));
+  const authState = authStore(({token, loading}) => ({token, loading}));
 
-  const setToken = authStore(state => [state.setToken]);
+  const setToken = authStore(state => state.setToken);
 
   React.useEffect(() => {
     (async () => {
@@ -22,5 +22,5 @@ export function useAuth() {
     })();
   }, []);
 
-  return {state, auth};
+  return {authState, auth};
 }

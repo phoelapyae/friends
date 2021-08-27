@@ -54,7 +54,7 @@ function HomeScreenTabs() {
 }
 
 const Application = () => {
-  const {state} = useAuth();
+  const {authState} = useAuth();
   return (
     <NavigationContainer>
       <SafeAreaView style={styles.container}>
@@ -63,7 +63,7 @@ const Application = () => {
           screenOptions={{
             headerShown: false,
           }}>
-          {!state.token ? (
+          {!authState.token ? (
             <React.Fragment>
               {NonAuthRoutes &&
                 NonAuthRoutes.map(route => (

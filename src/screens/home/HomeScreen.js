@@ -11,8 +11,16 @@ import StoryCard from '@components/story/StoryCard';
 import gStyles from '@/theme';
 import Icon from 'react-native-vector-icons/Ionicons';
 import globalStyles from '@styles/globalStyles';
+import {storyStore} from '@store/storyStore';
 
 const HomeScreen = ({navigation}) => {
+  const fetchStories = storyStore(state => state.fetchStories);
+  const stories = storyStore(state => state.stories);
+
+  React.useEffect(() => {
+    fetchStories();
+  }, []);
+
   return (
     <View style={styles.root}>
       <StatusBar barStyle="dark-content" backgroundColor="white" />
@@ -29,9 +37,9 @@ const HomeScreen = ({navigation}) => {
           <Icon name="md-notifications-outline" color="#333" size={20} />
         </TouchableOpacity>
       </View>
-      <View>
+      <View style={styles.container}>
         <ScrollView showsVerticalScrollIndicator={false}>
-          <StoryCard navigation={navigation} />
+          <StoryCard navigation={navigation} stories={stories} />
         </ScrollView>
 
         {/* Fab for Story Create */}
@@ -57,7 +65,9 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     backgroundColor: '#fff',
   },
-
+  container: {
+    flex: 1,
+  },
   storyCreateBtn: {
     backgroundColor: gStyles.primaryColor,
     position: 'absolute',

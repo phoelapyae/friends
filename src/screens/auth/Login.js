@@ -7,17 +7,18 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
-import {BackSvg} from '@assets/svg';
+import {BackSvg, FacebookSvg} from '@assets/svg';
 import gStyles from '@/theme';
 import globalStyles from '@styles/globalStyles';
 import {Formik} from 'formik';
 import {loginValidationSchema} from '@utils/validation';
+import Divider from '@components/Divider';
 import {authStore} from '@store/authStore';
 import shallow from 'zustand/shallow';
 
 const Login = ({navigation}) => {
-  const [login, loading] = authStore(
-    state => [state.login, state.loading],
+  const [login, loading, facebookLogin] = authStore(
+    state => [state.login, state.loading, state.facebookLogin],
     shallow,
   );
 
@@ -93,13 +94,7 @@ const Login = ({navigation}) => {
                   <Text style={styles.errorText}>{errors.password}</Text>
                 )}
               </View>
-              <View style={styles.hrefLayout}>
-                <Text style={styles.hrefTextLight}>Are you a new member?</Text>
-                <TouchableOpacity
-                  onPress={() => navigation.navigate('RegisterScreen')}>
-                  <Text style={styles.hrefTextBold}>Register Here</Text>
-                </TouchableOpacity>
-              </View>
+
               <TouchableOpacity
                 style={styles.loginBtn}
                 onPress={handleSubmit}
@@ -115,6 +110,22 @@ const Login = ({navigation}) => {
             </View>
           )}
         </Formik>
+
+        <Divider text="or" />
+
+        <TouchableOpacity
+          style={{alignItems: 'center'}}
+          onPress={() => facebookLogin()}>
+          <FacebookSvg />
+        </TouchableOpacity>
+
+        <View style={styles.hrefLayout}>
+          <Text style={styles.hrefTextLight}>Are you a new member?</Text>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('RegisterScreen')}>
+            <Text style={styles.hrefTextBold}>Register Here</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
@@ -150,10 +161,12 @@ const styles = StyleSheet.create({
   hrefLayout: {
     marginVertical: 10,
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   hrefTextLight: {
     fontFamily: 'Nunito-Light',
+    marginRight: 12,
   },
   hrefTextBold: {
     fontFamily: 'Nunito-Bold',
