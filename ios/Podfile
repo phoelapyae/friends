@@ -20,6 +20,8 @@ target 'friends' do
 
   pod 'react-native-fbsdk', :path => '../node_modules/react-native-fbsdk'
 
+  pod 'RNCMaskedView', :path => '../node_modules/@react-native-masked-view/masked-view'
+
   target 'friendsTests' do
     inherit! :complete
     # Pods for testing

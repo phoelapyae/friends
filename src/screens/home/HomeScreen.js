@@ -13,10 +13,14 @@ import gStyles from '@/theme';
 import Icon from 'react-native-vector-icons/Ionicons';
 import globalStyles from '@styles/globalStyles';
 import {storyStore} from '@store/storyStore';
+import shallow from 'zustand/shallow';
+import StorySkeleton from '../../components/skeleton/StorySkeleton';
 
 const HomeScreen = ({navigation}) => {
-  const fetchStories = storyStore(state => state.fetchStories);
-  const stories = storyStore(state => state.stories);
+  const [fetchStories, stories, loading] = storyStore(
+    state => [state.fetchStories, state.stories, state.loading],
+    shallow,
+  );
 
   React.useEffect(() => {
     fetchStories();
@@ -46,13 +50,21 @@ const HomeScreen = ({navigation}) => {
         </TouchableOpacity>
       </View>
       <View style={styles.container}>
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }>
-          <StoryCard navigation={navigation} stories={stories} />
-        </ScrollView>
+        {loading ? (
+          <React.Fragment>
+            <StorySkeleton />
+            <StorySkeleton />
+            <StorySkeleton />
+          </React.Fragment>
+        ) : (
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }>
+            <StoryCard navigation={navigation} stories={stories} />
+          </ScrollView>
+        )}
 
         {/* Fab for Story Create */}
         <TouchableOpacity
