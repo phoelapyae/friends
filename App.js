@@ -3,6 +3,7 @@ import React from 'react';
 import ApplicationNavigator from '@/navigation/Application';
 import {LogBox} from 'react-native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
+import {MenuProvider} from 'react-native-popup-menu';
 
 LogBox.ignoreLogs([
   'VirtualizedLists should never be nested',
@@ -13,7 +14,9 @@ LogBox.ignoreLogs([
 const App = () => {
   return (
     <SafeAreaProvider>
-      <ApplicationNavigator />
+      <MenuProvider>
+        <ApplicationNavigator />
+      </MenuProvider>
     </SafeAreaProvider>
   );
 };

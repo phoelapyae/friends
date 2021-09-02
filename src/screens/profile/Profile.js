@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   StyleSheet,
   View,
@@ -11,9 +11,51 @@ import globalStyles from '../../styles/globalStyles';
 import gTheme from '@/theme';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {useAuth} from '@hooks/useAuth';
+import Menu, {
+  MenuOptions,
+  MenuOption,
+  MenuTrigger,
+  renderers,
+} from 'react-native-popup-menu';
+
+const {SlideInMenu} = renderers;
+
+const YourComponent = ({selectNumber}) => (
+  <Menu
+    name="numbers"
+    renderer={SlideInMenu}
+    onSelect={value => selectNumber(value)}>
+    <MenuTrigger style={styles.trigger}>
+      <TouchableOpacity>
+        <Icon name="md-ellipsis-vertical" color="#333" size={19} />
+      </TouchableOpacity>
+    </MenuTrigger>
+    <MenuOptions
+      customStyles={{
+        optionText: [styles.menuItemText, styles.slideInOption],
+      }}>
+      <MenuOption value={1} text="Edit" />
+      <MenuOption value={2} text="Setting" />
+      <MenuOption value={3} text="Option three" />
+      <MenuOption value={4} text="Option four" />
+      {null /* conditional not rendered option */}
+      <MenuOption value={5} text="Logout" />
+    </MenuOptions>
+  </Menu>
+);
 
 const Profile = ({navigation}) => {
   const {auth} = useAuth();
+
+  const onOptionSelect = value => {
+    const v = typeof value === 'object' ? JSON.stringify(value) : value;
+    return value !== 'Do not close';
+  };
+
+  const selectNumber = value => {
+    console.log('selecting number', value);
+  };
+
   return (
     <View style={styles.root}>
       <StatusBar barStyle="dark-content" backgroundColor="white" />
@@ -29,7 +71,7 @@ const Profile = ({navigation}) => {
               source={{
                 uri: 'https://envato-shoebox-0.imgix.net/8f00/9244-65d5-4144-8e64-a1c87e927e5e/DSC02545.jpg?auto=compress%2Cformat&fit=max&mark=https%3A%2F%2Felements-assets.envato.com%2Fstatic%2Fwatermark2.png&markalign=center%2Cmiddle&markalpha=18&w=500&s=bc2097abaf77d272ba8d3d84cae417f5',
               }}
-              style={globalStyles.avatarLg}
+              style={globalStyles.avatarNm}
             />
             <View
               style={[
@@ -47,9 +89,7 @@ const Profile = ({navigation}) => {
             </View>
           </View>
 
-          <TouchableOpacity>
-            <Icon name="md-ellipsis-vertical" color="#ddd" size={19} />
-          </TouchableOpacity>
+          <YourComponent selectNumber={selectNumber} />
         </View>
 
         {/* Profile Data */}
@@ -147,6 +187,31 @@ const styles = StyleSheet.create({
     backgroundColor: gTheme.primaryColor,
     borderRadius: 20,
     padding: 14,
+  },
+
+  trigger: {
+    padding: 5,
+    margin: 5,
+  },
+  triggerText: {
+    color: 'white',
+  },
+  disabled: {
+    color: '#ccc',
+  },
+  divider: {
+    marginVertical: 5,
+    marginHorizontal: 2,
+    borderBottomWidth: 1,
+    borderColor: '#ccc',
+  },
+
+  slideInOption: {
+    padding: 5,
+  },
+  menuItemText: {
+    fontSize: 18,
+    fontFamily: 'Nunito-Regular',
   },
 });
 export default Profile;

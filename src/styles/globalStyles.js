@@ -60,6 +60,11 @@ export default StyleSheet.create({
     height: 50,
     borderRadius: 100,
   },
+  avatarNm: {
+    width: 65,
+    height: 65,
+    borderRadius: 100,
+  },
   avatarLg: {
     width: 80,
     height: 80,
