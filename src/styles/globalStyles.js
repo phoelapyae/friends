@@ -26,6 +26,9 @@ export default StyleSheet.create({
   },
   // Layout
 
+  mr4: {
+    marginRight: 8,
+  },
   ml8: {
     marginLeft: 8,
   },
@@ -40,6 +43,9 @@ export default StyleSheet.create({
   },
   mb12: {
     marginBottom: 12,
+  },
+  mh8: {
+    marginHorizontal: 8,
   },
 
   themeText: {
@@ -92,6 +98,11 @@ export default StyleSheet.create({
   },
   errorText: {
     color: 'red',
+    fontFamily: 'Nunito-Regular',
+    fontSize: 15,
+  },
+  infoText: {
+    color: '#0275d8',
     fontFamily: 'Nunito-Regular',
     fontSize: 15,
   },

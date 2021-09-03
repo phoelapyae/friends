@@ -9,6 +9,7 @@ import ChatScreen from '@screens/chat/Chat';
 import ProfileScreen from '@screens/profile/Profile';
 import FeedDetailScreen from '@screens/home/FeedDetail';
 import StoryCreateScreen from '@screens/home/story/StoryCreateScreen';
+import ProfileEdit from '@screens/profile/ProfileEdit';
 
 const NonAuthRoutes = [
   {name: 'WelcomeScreen', component: WelcomeScreen},
@@ -27,6 +28,7 @@ const BottomAuthRoutes = [
 const AuthStackRoutes = [
   {name: 'FeedDetailScreen', component: FeedDetailScreen},
   {name: 'StoryCreateScreen', component: StoryCreateScreen},
+  {name: 'ProfileEdit', component: ProfileEdit},
 ];
 
 export {NonAuthRoutes, BottomAuthRoutes, AuthStackRoutes};

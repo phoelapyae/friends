@@ -88,6 +88,25 @@ export function LoveSvg(props) {
   );
 }
 
+export function PlusSvg(props) {
+  return (
+    <Svg
+      width={16}
+      height={16}
+      viewBox="0 0 16 16"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}>
+      <Path
+        stroke={props.color ? props.color : '#2E75FF'}
+        strokeWidth={3}
+        strokeLinecap="round"
+        d="M7.763 14.5v-13M1.5 7.763h13"
+      />
+    </Svg>
+  );
+}
+
 export function CoupleSvg(props) {
   return (
     <Svg

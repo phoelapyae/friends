@@ -97,9 +97,9 @@ const StoryCard = ({navigation, stories}) => {
                 <Image source={{uri: story.imageSrc}} style={styles.cardImg} />
               </View>
             )} */}
-            <View style={styles.cardImgProvider}>
+            {/* <View style={styles.cardImgProvider}>
               <Image source={{uri: imageSrc}} style={styles.cardImg} />
-            </View>
+            </View> */}
 
             <View style={styles.content}>
               <Text style={styles.contentText}>{story.content}</Text>
@@ -112,6 +112,10 @@ const StoryCard = ({navigation, stories}) => {
               <View style={styles.flexRow}>
                 {renderFirstReactBtn({type: 'love'})}
                 {renderSecondReactBtn({type: 'wow'})}
+                <TouchableOpacity
+                  style={[styles.flexRow, styles.secondaryReactBtn]}>
+                  <Icon name="md-add" size={17} color="#3b5998" />
+                </TouchableOpacity>
               </View>
               <TouchableOpacity
                 style={styles.visitBtn}
@@ -237,7 +241,7 @@ const styles = StyleSheet.create({
     height: 26,
   },
   loveReactionBtn: {
-    backgroundColor: 'red',
+    backgroundColor: '#F36B7E',
     borderRadius: 20,
     justifyContent: 'center',
     alignItems: 'center',
