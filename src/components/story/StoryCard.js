@@ -1,15 +1,21 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
 import gStyles from '@/theme';
 import Icon from 'react-native-vector-icons/Ionicons';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
 import moment from 'moment';
 import {teaser} from '@utils/index';
+import globalStyles from '@styles/globalStyles';
+import BottomSlideMenu from '@components/BottomSlideMenu';
+import {EditPencilSvg} from '@assets/svg';
 
 /**
  * This Component is used in homescreen as story card
  */
-const StoryCard = ({navigation, stories}) => {
+const StoryCard = ({navigation, stories, me}) => {
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedPost, setSelectedPost] = useState({});
+
   const renderFirstReactBtn = reactType => {
     switch (reactType.type) {
       case 'love':
@@ -70,28 +76,62 @@ const StoryCard = ({navigation, stories}) => {
 
   const profileDefaultImg =
     'https://images.unsplash.com/photo-1608889175123-8ee362201f81?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80';
+
+  const lists = [
+    {id: 'edit', name: 'Edit Post', icon: 'md-create-outline'},
+    {id: 'save', name: 'Bookmark', icon: 'md-bookmark-outline'},
+    {id: 'delete', name: 'Delete', icon: 'trash-outline'},
+  ];
+
   return (
     <React.Fragment>
       {stories &&
         stories.map(story => (
           <View key={story._id} style={styles.card}>
-            <View style={styles.profileRow}>
-              <Image
-                source={{
-                  uri: story.user.avatar
-                    ? story.user.avatar
-                    : profileDefaultImg,
-                }}
-                style={styles.avatar}
-              />
-
-              <View style={styles.profile}>
-                <Text style={styles.fullName}>{story.user.fullName}</Text>
-                <Text style={styles.dateTimeText}>
-                  {moment(story.createdAt).fromNow()}
-                </Text>
+            <View
+              style={[
+                styles.profileRow,
+                globalStyles.flexRow,
+                globalStyles.justifySpaceBetween,
+                globalStyles.flexRowAlignCenter,
+              ]}>
+              <View
+                style={[globalStyles.flexRow, globalStyles.justifyFlexStart]}>
+                <Image
+                  source={{
+                    uri: story.user.avatar
+                      ? story.user.avatar
+                      : profileDefaultImg,
+                  }}
+                  style={styles.avatar}
+                />
+                <View
+                  style={[
+                    globalStyles.flexColumn,
+                    globalStyles.ml8,
+                    globalStyles.flexRowJustifyCenter,
+                  ]}>
+                  <Text
+                    style={[globalStyles.themeTextBold, globalStyles.lgText]}>
+                    {story.user.fullName}
+                  </Text>
+                  <Text style={styles.dateTimeText}>
+                    {moment(story.createdAt).fromNow()}
+                  </Text>
+                </View>
               </View>
+
+              {/* Bottom Slide up menu for profile */}
+
+              <TouchableOpacity
+                onPress={() => {
+                  setModalVisible(true);
+                  setSelectedPost(story);
+                }}>
+                <Icon name="md-ellipsis-vertical" color="#333" size={19} />
+              </TouchableOpacity>
             </View>
+
             {story.coverPhoto && (
               <View style={styles.cardImgProvider}>
                 <Image
@@ -106,6 +146,7 @@ const StoryCard = ({navigation, stories}) => {
                 {teaser(story.content, 30, '...')}
               </Text>
             </View>
+
             <View style={styles.reactionRow}>
               {/* <View style={styles.flexRow}>
                 {story.reaction[0] && renderFirstReactBtn(story.reaction[0])}
@@ -124,6 +165,7 @@ const StoryCard = ({navigation, stories}) => {
                 onPress={() =>
                   navigation.navigate('FeedDetailScreen', {
                     id: story._id,
+                    me,
                   })
                 }>
                 <Text style={styles.visitText}>View</Text>
@@ -132,6 +174,16 @@ const StoryCard = ({navigation, stories}) => {
             </View>
           </View>
         ))}
+
+      <BottomSlideMenu
+        lists={lists}
+        auth={me}
+        selectedPost={selectedPost}
+        visible={modalVisible}
+        onChange={visible => {
+          setModalVisible(visible);
+        }}
+      />
     </React.Fragment>
   );
 };
@@ -147,9 +199,6 @@ const styles = StyleSheet.create({
     borderRadius: 100,
   },
   profileRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
     marginVertical: 12,
     paddingHorizontal: 20,
   },

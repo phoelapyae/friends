@@ -14,7 +14,7 @@ import {useQuery} from 'react-query';
 import {fetchStoryById} from '@hooks/useStory';
 
 const FeedDetail = ({route, navigation}) => {
-  const {id} = route.params;
+  const {id, me} = route.params;
 
   const {
     isLoading,
@@ -42,6 +42,16 @@ const FeedDetail = ({route, navigation}) => {
             {story.user.fullName}
           </Text>
         )}
+        {isLoading ? (
+          <Text>Loading...</Text>
+        ) : story.user._id === me?._id ? (
+          <Text>POst admin</Text>
+        ) : (
+          <Text>Just guest</Text>
+        )}
+        {/* <TouchableOpacity onPress={() => navigation.goBack(null)}>
+          <Icon name="md-chevron-back" size={30} />
+        </TouchableOpacity> */}
       </View>
       <View style={styles.container}>
         {isLoading ? (

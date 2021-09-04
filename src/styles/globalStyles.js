@@ -44,6 +44,10 @@ export default StyleSheet.create({
   mb12: {
     marginBottom: 12,
   },
+
+  mb20: {
+    marginBottom: 20,
+  },
   mh8: {
     marginHorizontal: 8,
   },
@@ -105,5 +109,15 @@ export default StyleSheet.create({
     color: '#0275d8',
     fontFamily: 'Nunito-Regular',
     fontSize: 15,
+  },
+
+  // slide menu
+
+  slideInOption: {
+    padding: 5,
+  },
+  menuItemText: {
+    fontSize: 18,
+    fontFamily: 'Nunito-Regular',
   },
 });

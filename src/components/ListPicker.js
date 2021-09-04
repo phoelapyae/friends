@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  Alert,
   Modal,
   StyleSheet,
   Text,
@@ -10,7 +9,7 @@ import {
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-const App = ({onChange, visible, title, lists, onPick}) => {
+const ListPicker = ({onChange, visible, title, lists, onPick}) => {
   return (
     <Modal
       animationType="slide"
@@ -129,4 +128,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default App;
+export default ListPicker;

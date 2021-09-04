@@ -16,6 +16,7 @@ import StorySkeleton from '@components/skeleton/StorySkeleton';
 
 import {useQuery} from 'react-query';
 import {fetchStories} from '@hooks/useStory';
+import {fetchProfile} from '@hooks/useProfile';
 
 const HomeScreen = ({navigation}) => {
   const {
@@ -24,6 +25,12 @@ const HomeScreen = ({navigation}) => {
     data: stories,
     refetch,
   } = useQuery('stories', fetchStories);
+
+  const {
+    isLoading: profileLoading,
+    isError: profileError,
+    data: me,
+  } = useQuery('profile', fetchProfile);
 
   const [refreshing, setRefreshing] = React.useState(false);
 
@@ -50,7 +57,7 @@ const HomeScreen = ({navigation}) => {
         </TouchableOpacity>
       </View>
       <View style={styles.container}>
-        {isLoading ? (
+        {isLoading && profileLoading ? (
           <React.Fragment>
             <StorySkeleton />
             <StorySkeleton />
@@ -66,7 +73,7 @@ const HomeScreen = ({navigation}) => {
             refreshControl={
               <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
             }>
-            <StoryCard navigation={navigation} stories={stories} />
+            <StoryCard navigation={navigation} stories={stories} me={me} />
           </ScrollView>
         )}
 

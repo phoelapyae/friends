@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {
   StyleSheet,
   View,
@@ -8,11 +8,10 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
-import globalStyles from '../../styles/globalStyles';
+import globalStyles from '@styles/globalStyles';
 import StoryCard from '@components/story/StoryCard';
 import gTheme from '@/theme';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {PlusSvg} from '@assets/svg';
 import {useAuth} from '@hooks/useAuth';
 import Menu, {
   MenuOptions,
@@ -33,7 +32,7 @@ const SlideMenu = ({navigation, auth}) => (
     </MenuTrigger>
     <MenuOptions
       customStyles={{
-        optionText: [styles.menuItemText, styles.slideInOption],
+        optionText: [globalStyles.menuItemText, globalStyles.slideInOption],
       }}>
       <MenuOption
         onSelect={() => navigation.navigate('ProfileEdit')}
@@ -188,14 +187,6 @@ const styles = StyleSheet.create({
     backgroundColor: gTheme.primaryColor,
     borderRadius: 20,
     padding: 14,
-  },
-
-  slideInOption: {
-    padding: 5,
-  },
-  menuItemText: {
-    fontSize: 18,
-    fontFamily: 'Nunito-Regular',
   },
 });
 export default Profile;
