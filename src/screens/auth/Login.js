@@ -7,14 +7,14 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
+import {BackSvg, FacebookSvg} from '@assets/svg';
 import gStyles from '@/theme';
 import globalStyles from '@styles/globalStyles';
 import {Formik} from 'formik';
 import {loginValidationSchema} from '@utils/validation';
+import Divider from '@components/Divider';
 import {authStore} from '@store/authStore';
-import Container from '@components/Container';
 import shallow from 'zustand/shallow';
-import SocialLogin from '@components/auth/SocialLogin';
 
 const Login = ({navigation}) => {
   const [login, loading, facebookLogin] = authStore(
@@ -35,15 +35,22 @@ const Login = ({navigation}) => {
   };
 
   return (
-    <Container footer={<SocialLogin />}>
+    <View style={styles.root}>
+      <View style={styles.header}>
+        <TouchableOpacity onPress={() => navigation.goBack(null)}>
+          <BackSvg />
+        </TouchableOpacity>
+      </View>
       <View style={styles.body}>
-        <Text style={styles.title}>Welcome Back</Text>
-        <Text style={styles.subTitle}>
-          We are happy that you are back again.
-        </Text>
-
-        <Text style={globalStyles.errorText}>{errorMsg || errorMsg}</Text>
-
+        <View
+          style={[
+            globalStyles.flexRow,
+            globalStyles.justifySpaceBetween,
+            globalStyles.flexRowAlignCenter,
+          ]}>
+          <Text style={styles.title}>Login</Text>
+          <Text style={globalStyles.errorText}>{errorMsg || errorMsg}</Text>
+        </View>
         <Formik
           initialValues={{email: '', password: ''}}
           validationSchema={loginValidationSchema}
@@ -112,27 +119,44 @@ const Login = ({navigation}) => {
             </View>
           )}
         </Formik>
+
+        <Divider text="or" />
+
+        <TouchableOpacity
+          style={{alignItems: 'center'}}
+          onPress={loginWithFacebook}>
+          <FacebookSvg />
+        </TouchableOpacity>
+
+        <View style={styles.hrefLayout}>
+          <Text style={styles.hrefTextLight}>Are you a new member?</Text>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('RegisterScreen')}>
+            <Text style={styles.hrefTextBold}>Register Here</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-    </Container>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  body: {
+  root: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
+  header: {
     paddingHorizontal: 12,
-    backgroundColor: 'transparent',
+    paddingTop: 5,
+  },
+  body: {
+    flex: 1,
+    paddingHorizontal: 12,
+    justifyContent: 'center',
   },
   title: {
     fontFamily: 'Nunito-Bold',
-    fontSize: 20,
-    alignSelf: 'center',
-    marginBottom: 14,
-  },
-  subTitle: {
-    fontFamily: 'Nunito-Regular',
-    fontSize: 16,
-    color: 'black',
-    alignSelf: 'center',
+    fontSize: 18,
   },
   inputField: {
     marginVertical: 12,
@@ -144,9 +168,20 @@ const styles = StyleSheet.create({
     fontFamily: 'Nunito-Regular',
     paddingLeft: 12,
   },
-
+  hrefLayout: {
+    marginVertical: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  hrefTextLight: {
+    fontFamily: 'Nunito-Light',
+    marginRight: 12,
+  },
+  hrefTextBold: {
+    fontFamily: 'Nunito-Bold',
+  },
   loginBtn: {
-    width: '90%',
     borderRadius: 15,
     marginVertical: 6,
     height: 50,
@@ -168,9 +203,6 @@ const styles = StyleSheet.create({
     marginVertical: 6,
     padding: 15,
     backgroundColor: '#ddd',
-  },
-  footer: {
-    flex: 1,
   },
 });
 export default Login;

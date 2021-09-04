@@ -10,7 +10,6 @@ import {
 } from 'react-native';
 import globalStyles from '../../styles/globalStyles';
 import StoryCard from '@components/story/StoryCard';
-import {storyStore} from '@store/storyStore';
 import gTheme from '@/theme';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {PlusSvg} from '@assets/svg';
@@ -21,16 +20,14 @@ import Menu, {
   MenuTrigger,
   renderers,
 } from 'react-native-popup-menu';
-import {userStore} from '@store/userStore';
-import shallow from 'zustand/shallow';
+import {useQuery} from 'react-query';
+import {fetchStories} from '@hooks/useStory';
+import {fetchProfile} from '@hooks/useProfile';
 
 const {SlideInMenu} = renderers;
 
-const SlideMenu = ({selectMenuItem, navigation}) => (
-  <Menu
-    name="numbers"
-    renderer={SlideInMenu}
-    onSelect={value => selectMenuItem(value)}>
+const SlideMenu = ({navigation, auth}) => (
+  <Menu name="numbers" renderer={SlideInMenu}>
     <MenuTrigger>
       <Icon name="md-ellipsis-vertical" color="#333" size={19} />
     </MenuTrigger>
@@ -47,33 +44,21 @@ const SlideMenu = ({selectMenuItem, navigation}) => (
       <MenuOption value={3} text="Option three" />
       <MenuOption value={4} text="Option four" />
       {null /* conditional not rendered option */}
-      <MenuOption value={5} text="Logout" />
+      <MenuOption value="logout" onSelect={() => auth.logout()} text="Logout" />
     </MenuOptions>
   </Menu>
 );
 
 const Profile = ({navigation}) => {
   const {auth} = useAuth();
-  const [fetchStories, stories] = storyStore(
-    state => [state.fetchStories, state.stories],
-    shallow,
-  );
 
-  React.useEffect(() => {
-    fetchStories();
-  }, []);
-  const [fetchProfile, me, loading] = userStore(
-    state => [state.fetchProfile, state.me, state.loading],
-    shallow,
-  );
+  const {isLoading, isError, data: stories} = useQuery('stories', fetchStories);
 
-  useEffect(() => {
-    fetchProfile();
-  }, [fetchProfile]);
-
-  const selectMenuItem = value => {
-    console.log('selecting number', value);
-  };
+  const {
+    isLoading: profileLoading,
+    isError: profileError,
+    data: me,
+  } = useQuery('profile', fetchProfile);
 
   return (
     <View style={styles.root}>
@@ -85,7 +70,7 @@ const Profile = ({navigation}) => {
             globalStyles.justifySpaceBetween,
             globalStyles.flexRowAlignCenter,
           ]}>
-          {loading ? (
+          {profileLoading ? (
             <Text>Loading</Text>
           ) : (
             <View style={[globalStyles.flexRow, globalStyles.justifyFlexStart]}>
@@ -115,7 +100,7 @@ const Profile = ({navigation}) => {
           )}
 
           {/* Bottom Slide up menu for profile */}
-          <SlideMenu selectMenuItem={selectMenuItem} navigation={navigation} />
+          <SlideMenu navigation={navigation} auth={auth} />
         </View>
 
         {/* Profile Data */}
@@ -159,24 +144,11 @@ const Profile = ({navigation}) => {
         {/* Profile Data */}
 
         {/* Profile Bio */}
-        {loading ? (
+        {profileLoading ? (
           <Text>Loading</Text>
         ) : (
           <View style={styles.bio}>
-            {me.bio ? (
-              <Text style={globalStyles.themeText}>{me.bio}</Text>
-            ) : (
-              <TouchableOpacity
-                style={[
-                  globalStyles.flexRow,
-                  globalStyles.flexRowAlignCenter,
-                  globalStyles.flexRowJustifyCenter,
-                ]}>
-                <PlusSvg color="#ddd" style={globalStyles.mh8} />
-
-                <Text style={globalStyles.themeText}>Add Bio</Text>
-              </TouchableOpacity>
-            )}
+            {me.bio && <Text style={globalStyles.themeText}>{me.bio}</Text>}
           </View>
         )}
 
@@ -190,19 +162,6 @@ const Profile = ({navigation}) => {
               globalStyles.textWhite,
             ]}>
             Follow
-          </Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={[styles.followBtn, globalStyles.mv10]}
-          onPress={() => auth.logout()}>
-          <Text
-            style={[
-              globalStyles.themeTextBold,
-              globalStyles.textAlignCenter,
-              globalStyles.textWhite,
-            ]}>
-            Logout
           </Text>
         </TouchableOpacity>
       </View>

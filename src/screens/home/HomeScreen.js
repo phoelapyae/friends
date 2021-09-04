@@ -12,25 +12,25 @@ import StoryCard from '@components/story/StoryCard';
 import gStyles from '@/theme';
 import Icon from 'react-native-vector-icons/Ionicons';
 import globalStyles from '@styles/globalStyles';
-import {storyStore} from '@store/storyStore';
-import shallow from 'zustand/shallow';
-import StorySkeleton from '../../components/skeleton/StorySkeleton';
+import StorySkeleton from '@components/skeleton/StorySkeleton';
+
+import {useQuery} from 'react-query';
+import {fetchStories} from '@hooks/useStory';
 
 const HomeScreen = ({navigation}) => {
-  const [fetchStories, stories, loading] = storyStore(
-    state => [state.fetchStories, state.stories, state.loading],
-    shallow,
-  );
-
-  React.useEffect(() => {
-    fetchStories();
-  }, []);
+  const {
+    isLoading,
+    isError,
+    data: stories,
+    refetch,
+  } = useQuery('stories', fetchStories);
 
   const [refreshing, setRefreshing] = React.useState(false);
 
-  const onRefresh = React.useCallback(() => {
+  const onRefresh = React.useCallback(async () => {
     setRefreshing(true);
-    fetchStories().then(() => setRefreshing(false));
+    await refetch();
+    setRefreshing(false);
   }, []);
 
   return (
@@ -50,12 +50,16 @@ const HomeScreen = ({navigation}) => {
         </TouchableOpacity>
       </View>
       <View style={styles.container}>
-        {loading ? (
+        {isLoading ? (
           <React.Fragment>
             <StorySkeleton />
             <StorySkeleton />
             <StorySkeleton />
           </React.Fragment>
+        ) : isError ? (
+          <View style={styles.errorLayout}>
+            <Text style={globalStyles.errorText}>There was an error</Text>
+          </View>
         ) : (
           <ScrollView
             showsVerticalScrollIndicator={false}
@@ -106,6 +110,12 @@ const styles = StyleSheet.create({
     shadowOffset: {width: 0, height: 2},
     shadowRadius: 100,
     elevation: 4,
+  },
+  errorLayout: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'white',
   },
 });
 export default HomeScreen;

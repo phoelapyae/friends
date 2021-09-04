@@ -16,17 +16,5 @@ export const storyStore = create(set => ({
     }
   },
 
-  fetchStories: async () => {
-    set({loading: true});
-    try {
-      const {data} = await friends.get('/story/all');
-      set({loading: false, stories: data.stories});
-    } catch (error) {
-      set({loading: false});
-      const {data} = error.response;
-      throw data.errors.message;
-    }
-  },
-
   loading: false,
 }));

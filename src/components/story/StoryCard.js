@@ -4,6 +4,8 @@ import gStyles from '@/theme';
 import Icon from 'react-native-vector-icons/Ionicons';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
 import moment from 'moment';
+import {teaser} from '@utils/index';
+
 /**
  * This Component is used in homescreen as story card
  */
@@ -68,8 +70,6 @@ const StoryCard = ({navigation, stories}) => {
 
   const profileDefaultImg =
     'https://images.unsplash.com/photo-1608889175123-8ee362201f81?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80';
-  const imageSrc =
-    'https://envato-shoebox-0.imgix.net/72a9/db87-232b-459e-afd7-007e5328fff9/Sam_Kladska_18-06-19_165_retus_final2.jpg?auto=compress%2Cformat&fit=max&mark=https%3A%2F%2Felements-assets.envato.com%2Fstatic%2Fwatermark2.png&markalign=center%2Cmiddle&markalpha=18&w=800&s=e2982ec7f2d92a11fceb3fb2ba47cdb4';
   return (
     <React.Fragment>
       {stories &&
@@ -92,17 +92,19 @@ const StoryCard = ({navigation, stories}) => {
                 </Text>
               </View>
             </View>
-            {/* {story.imageSrc && (
+            {story.coverPhoto && (
               <View style={styles.cardImgProvider}>
-                <Image source={{uri: story.imageSrc}} style={styles.cardImg} />
+                <Image
+                  source={{uri: story.coverPhoto}}
+                  style={styles.cardImg}
+                />
               </View>
-            )} */}
-            {/* <View style={styles.cardImgProvider}>
-              <Image source={{uri: imageSrc}} style={styles.cardImg} />
-            </View> */}
+            )}
 
             <View style={styles.content}>
-              <Text style={styles.contentText}>{story.content}</Text>
+              <Text style={styles.contentText}>
+                {teaser(story.content, 30, '...')}
+              </Text>
             </View>
             <View style={styles.reactionRow}>
               {/* <View style={styles.flexRow}>
@@ -119,7 +121,11 @@ const StoryCard = ({navigation, stories}) => {
               </View>
               <TouchableOpacity
                 style={styles.visitBtn}
-                onPress={() => navigation.navigate('FeedDetailScreen')}>
+                onPress={() =>
+                  navigation.navigate('FeedDetailScreen', {
+                    id: story._id,
+                  })
+                }>
                 <Text style={styles.visitText}>View</Text>
                 <Icon name="chevron-forward" size={17} color="#333" />
               </TouchableOpacity>

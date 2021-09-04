@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {
   StyleSheet,
   View,
@@ -12,15 +12,20 @@ import {
 import globalStyles from '@styles/globalStyles';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {userStore} from '@store/userStore';
-import shallow from 'zustand/shallow';
 import {Formik} from 'formik';
 import gStyles from '@/theme';
+import {useQuery} from 'react-query';
+import {fetchProfile} from '@hooks/useProfile';
 
 const ProfileEdit = ({navigation}) => {
-  const [fetchProfile, me, loading, updateProfile] = userStore(
-    state => [state.fetchProfile, state.me, state.loading, state.updateProfile],
-    shallow,
-  );
+  const updateProfile = userStore(state => state.updateProfile);
+
+  const {
+    isLoading: profileLoading,
+    isError: profileError,
+    data: me,
+  } = useQuery('profile', fetchProfile);
+
   const [formLoading, setFormLoading] = useState(false);
   const formRef = useRef();
 
@@ -31,9 +36,6 @@ const ProfileEdit = ({navigation}) => {
       formRef.current.handleSubmit();
     }
   };
-  useEffect(() => {
-    fetchProfile();
-  }, [fetchProfile]);
 
   return (
     <View style={styles.root}>
@@ -69,7 +71,7 @@ const ProfileEdit = ({navigation}) => {
         </TouchableOpacity>
       </View>
       <View style={styles.container}>
-        {loading ? (
+        {profileLoading ? (
           <Text>Loading</Text>
         ) : (
           <ScrollView>

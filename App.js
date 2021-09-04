@@ -4,6 +4,7 @@ import ApplicationNavigator from '@/navigation/Application';
 import {LogBox} from 'react-native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {MenuProvider} from 'react-native-popup-menu';
+import {QueryClient, QueryClientProvider} from 'react-query';
 
 LogBox.ignoreLogs([
   'VirtualizedLists should never be nested',
@@ -11,13 +12,17 @@ LogBox.ignoreLogs([
   'Did not retain recoil value on render',
 ]);
 
+const queryClient = new QueryClient();
+
 const App = () => {
   return (
-    <SafeAreaProvider>
-      <MenuProvider>
-        <ApplicationNavigator />
-      </MenuProvider>
-    </SafeAreaProvider>
+    <QueryClientProvider client={queryClient}>
+      <SafeAreaProvider>
+        <MenuProvider>
+          <ApplicationNavigator />
+        </MenuProvider>
+      </SafeAreaProvider>
+    </QueryClientProvider>
   );
 };
 
