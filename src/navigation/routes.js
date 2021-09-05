@@ -6,6 +6,7 @@ import RegisterScreen from '@screens/auth/Register';
 import HomeScreen from '@screens/home/HomeScreen';
 import FriendMap from '@screens/friends/FriendMap';
 import ChatScreen from '@screens/chat/Chat';
+import ChatRoomScreen from '@screens/chat/ChatRoom';
 import ProfileScreen from '@screens/profile/Profile';
 import FeedDetailScreen from '@screens/home/FeedDetail';
 import StoryCreateScreen from '@screens/home/story/StoryCreateScreen';
@@ -29,6 +30,7 @@ const AuthStackRoutes = [
   {name: 'FeedDetailScreen', component: FeedDetailScreen},
   {name: 'StoryCreateScreen', component: StoryCreateScreen},
   {name: 'ProfileEdit', component: ProfileEdit},
+  {name: 'ChatRoomScreen', component: ChatRoomScreen},
 ];
 
 export {NonAuthRoutes, BottomAuthRoutes, AuthStackRoutes};
