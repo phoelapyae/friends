@@ -111,10 +111,13 @@ const StoryCard = ({navigation, stories, me}) => {
                     globalStyles.ml8,
                     globalStyles.flexRowJustifyCenter,
                   ]}>
-                  <Text
-                    style={[globalStyles.themeTextBold, globalStyles.lgText]}>
-                    {story.user.fullName}
-                  </Text>
+                  <TouchableOpacity>
+                    <Text
+                      style={[globalStyles.themeTextBold, globalStyles.mdText]}>
+                      {story.user.fullName}
+                    </Text>
+                  </TouchableOpacity>
+
                   <Text style={styles.dateTimeText}>
                     {moment(story.createdAt).fromNow()}
                   </Text>

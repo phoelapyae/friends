@@ -29,6 +29,9 @@ export default StyleSheet.create({
   mr4: {
     marginRight: 8,
   },
+  mr12: {
+    marginRight: 12,
+  },
   ml8: {
     marginLeft: 8,
   },
@@ -90,6 +93,9 @@ export default StyleSheet.create({
   },
   xlText: {
     fontSize: 20,
+  },
+  maxText: {
+    fontSize: 24,
   },
   textAlignCenter: {
     alignSelf: 'center',
