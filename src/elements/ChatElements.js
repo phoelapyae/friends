@@ -1,6 +1,11 @@
 import React from 'react';
-import {Bubble, Send} from 'react-native-gifted-chat';
-import {View, StyleSheet, ActivityIndicator} from 'react-native';
+import {Bubble, Send, InputToolbar} from 'react-native-gifted-chat';
+import {
+  View,
+  StyleSheet,
+  ActivityIndicator,
+  TouchableOpacity,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 function renderLoading() {
@@ -32,9 +37,12 @@ function renderBubble(props) {
 
 function renderSendButton(props) {
   return (
-    <Send {...props}>
-      <View style={styles.sendingContainer}>
-        <Icon name="md-send" size={32} color="#6646ee" />
+    <Send
+      {...props}
+      disabled={!props.text}
+      containerStyle={styles.sendBtnContainer}>
+      <View>
+        <Icon name="md-send" size={30} color="#6646ee" />
       </View>
     </Send>
   );
@@ -48,10 +56,63 @@ function scrollToBottomComponent() {
   );
 }
 
+function renderInputToolbar(props) {
+  return (
+    <>
+      <InputToolbar
+        {...props}
+        containerStyle={{
+          backgroundColor: '#f0f2f5',
+          borderTopWidth: 0,
+          marginHorizontal: 10,
+          marginLeft: '14%',
+          borderRadius: 80,
+        }}
+        textInputProps={{
+          style: {
+            color: '#000',
+            flex: 1,
+            alignItems: 'center',
+            paddingHorizontal: 20,
+          },
+          // multiline: false,
+          returnKeyType: 'go',
+          // onSubmitEditing: () => {
+          //   if (props.text && props.onSend) {
+          //     let text = props.text;
+          //     props.onSend({text: text.trim()}, true);
+          //   }
+          // },
+        }}
+      />
+      <TouchableOpacity
+        style={{
+          position: 'absolute',
+          marginLeft: '4%',
+          marginBottom: '1%',
+          bottom: 0,
+        }}
+        // onPress={this.handleChoosePhoto}
+      >
+        <Icon
+          name="md-image"
+          style={{
+            color: '#12558a',
+          }}
+          size={32}
+        />
+      </TouchableOpacity>
+    </>
+  );
+}
+
 const styles = StyleSheet.create({
-  sendingContainer: {
-    justifyContent: 'center',
+  sendBtnContainer: {
+    width: 44,
+    height: 44,
     alignItems: 'center',
+    justifyContent: 'center',
+    marginHorizontal: 4,
   },
   bottomComponentContainer: {
     justifyContent: 'center',
@@ -64,4 +125,10 @@ const styles = StyleSheet.create({
   },
 });
 
-export {renderBubble, renderSendButton, scrollToBottomComponent, renderLoading};
+export {
+  renderBubble,
+  renderSendButton,
+  scrollToBottomComponent,
+  renderLoading,
+  renderInputToolbar,
+};

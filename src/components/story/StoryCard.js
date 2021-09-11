@@ -74,13 +74,25 @@ const StoryCard = ({navigation, stories, me}) => {
     }
   };
 
-  const profileDefaultImg =
-    'https://images.unsplash.com/photo-1608889175123-8ee362201f81?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80';
-
   const lists = [
-    {id: 'edit', name: 'Edit Post', icon: 'md-create-outline'},
-    {id: 'save', name: 'Bookmark', icon: 'md-bookmark-outline'},
-    {id: 'delete', name: 'Delete', icon: 'trash-outline'},
+    {
+      id: 'edit',
+      name: 'Edit Post',
+      icon: 'md-create-outline',
+      route: 'StoryEditScreen',
+    },
+    {
+      id: 'save',
+      name: 'Bookmark',
+      icon: 'md-bookmark-outline',
+      route: 'StoryEditScreen',
+    },
+    {
+      id: 'delete',
+      name: 'Delete',
+      icon: 'trash-outline',
+      route: 'StoryEditScreen',
+    },
   ];
 
   return (
@@ -97,14 +109,20 @@ const StoryCard = ({navigation, stories, me}) => {
               ]}>
               <View
                 style={[globalStyles.flexRow, globalStyles.justifyFlexStart]}>
-                <Image
-                  source={{
-                    uri: story.user.avatar
-                      ? story.user.avatar
-                      : profileDefaultImg,
-                  }}
-                  style={styles.avatar}
-                />
+                {story.user.avatar ? (
+                  <Image
+                    source={{
+                      uri: story.user.avatar,
+                    }}
+                    style={styles.avatar}
+                  />
+                ) : (
+                  <Image
+                    source={require('@assets/images/default-profile-image.png')}
+                    style={styles.avatar}
+                  />
+                )}
+
                 <View
                   style={[
                     globalStyles.flexColumn,
@@ -181,6 +199,7 @@ const StoryCard = ({navigation, stories, me}) => {
       <BottomSlideMenu
         lists={lists}
         auth={me}
+        navigation={navigation}
         selectedPost={selectedPost}
         visible={modalVisible}
         onChange={visible => {

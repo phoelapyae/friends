@@ -13,6 +13,7 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import globalStyles from '@styles/globalStyles';
 import {teaser} from '@utils/index';
+import ActiveUserList from '@components/chat/ActiveUserList';
 
 const data = new Array(20).fill({
   name: 'Nay Yaung Lin Lakk',
@@ -81,7 +82,7 @@ const ChatScreen = ({navigation}) => {
               globalStyles.textWhite,
               globalStyles.mb12,
             ]}>
-            Chat
+            Messages
           </Text>
           <View style={[globalStyles.flexRow]}>
             <TouchableOpacity style={globalStyles.mr12}>
@@ -92,6 +93,7 @@ const ChatScreen = ({navigation}) => {
             </TouchableOpacity>
           </View>
         </View>
+
         {/* Render Screen Options Tab Here */}
         <View
           style={[
@@ -128,13 +130,16 @@ const ChatScreen = ({navigation}) => {
             flex: 1,
             backgroundColor: 'white',
             paddingHorizontal: 20,
-            marginTop: 10,
+            // marginTop: 20,
           }}>
+          <View style={{paddingVertical: 20}}>
+            <ActiveUserList />
+          </View>
           <FlatList
             showsVerticalScrollIndicator={false}
             data={data}
             renderItem={renderItem}
-            keyExtractor={item => item.id}
+            keyExtractor={item => item.title}
           />
         </View>
       </View>

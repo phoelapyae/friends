@@ -8,10 +8,8 @@ const lists = [
   {id: 'gallery', name: 'Get picture from gallery'},
 ];
 
-export default ({onPick, multiple, name, type}) => {
+export default ({onPick, multiple, image, setImage}) => {
   const [modalVisible, setModalVisible] = useState(false);
-
-  const [currentImage, setCurrentImage] = useState(null);
 
   const cameraOptions = {
     title: 'Select Image',
@@ -29,7 +27,7 @@ export default ({onPick, multiple, name, type}) => {
       } else {
         onPick(base64Images[0]);
       }
-      setCurrentImage(base64Images[0] ?? null);
+      setImage(base64Images[0] ?? null);
     }
   }
 
@@ -59,13 +57,13 @@ export default ({onPick, multiple, name, type}) => {
         onPress={() => {
           setModalVisible(true);
         }}>
-        {!currentImage ? (
+        {!image ? (
           <View style={{alignItems: 'center'}}>
             <Text style={styles.uploadText1}>+</Text>
             <Text style={styles.uploadText2}>Upload Photo</Text>
           </View>
         ) : (
-          <Image style={styles.image} source={{uri: currentImage}} />
+          <Image style={styles.image} source={{uri: image}} />
         )}
       </TouchableOpacity>
     </>

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import {
   StyleSheet,
   View,
@@ -8,37 +8,90 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import globalStyles from '@styles/globalStyles';
+import io from 'socket.io-client';
 import {GiftedChat} from 'react-native-gifted-chat';
 import {
   renderBubble,
   renderSendButton,
   scrollToBottomComponent,
   renderLoading,
+  renderInputToolbar,
 } from '@elements/ChatElements';
+import {useQuery} from 'react-query';
+import {fetchProfile} from '@hooks/useProfile';
 
 const ChatRoom = ({navigation}) => {
+  const socketRef = useRef();
+  const [chatTexts, setChatTexts] = useState([]);
+
+  const {
+    isLoading: profileLoading,
+    isError: profileError,
+    data: me,
+  } = useQuery('profile', fetchProfile);
+
+  useEffect(() => {
+    const roomId = 1;
+    socketRef.current = io('https://friendsmm.herokuapp.com', {
+      query: {roomId},
+      secure: true,
+      reconnection: true,
+      rejectUnauthorized: false,
+      transports: ['websocket'],
+    });
+
+    socketRef.current.on('connect', function () {
+      console.log('connect');
+      socketRef.current.emit('room', roomId);
+    });
+
+    // event://init-message
+    socketRef.current.on('event://init-message', message => {
+      setChatTexts(() => [message]);
+      // scrollToBottom();
+    });
+
+    socketRef.current.on('event://push-message', message => {
+      setChatTexts(items => [...items, message]);
+      // scrollToBottom();
+    });
+
+    socketRef.current.on('connect_error', err => {
+      console.log(`connect_error due to ${err.message}`);
+    });
+
+    return () => {
+      socketRef.current.disconnect();
+    };
+  }, []);
+
   const [messages, setMessages] = useState([
-    {
-      _id: 0,
-      text: 'New room created.',
-      createdAt: new Date().getTime(),
-      system: true,
-    },
     // example of chat message
-    {
-      _id: 1,
-      text: 'Henlo!',
-      createdAt: new Date().getTime(),
-      user: {
-        _id: 2,
-        name: 'Test User',
-      },
-    },
+    // {
+    //   _id: 1,
+    //   text: 'Henlo!',
+    //   createdAt: new Date().getTime(),
+    //   user: {
+    //     _id: 2,
+    //     name: 'Test User',
+    //   },
+    // },
   ]);
 
   // helper method that is sends a message
-  function handleSend(newMessage = []) {
-    setMessages(GiftedChat.append(messages, newMessage));
+  async function handleSend(newMessage = []) {
+    setMessages(prevMessages => GiftedChat.append(prevMessages, newMessage));
+
+    const {text, user} = newMessage[0];
+    const payload = {
+      sender: user._id,
+      message: text,
+    };
+    console.log(payload);
+    // Send Message
+    socketRef.current.emit('event://send-message', JSON.stringify(payload));
+
+    // setMessages(GiftedChat.append(messages, newMessage));
   }
 
   return (
@@ -57,28 +110,24 @@ const ChatRoom = ({navigation}) => {
         </Text>
       </View>
 
-      {/* <View style={styles.container}>
-        <FlatList
-          showsVerticalScrollIndicator={false}
-          data={data}
-          renderItem={renderMessages}
-          keyExtractor={item => item.id}
-        />
-        <ChatInput />
-      </View> */}
-
       <GiftedChat
         messages={messages}
         onSend={newMessage => handleSend(newMessage)}
-        user={{_id: 1}}
+        user={{_id: me?._id, avatar: me?.avatar, name: 'Aaron'}} // authenticated current user
         alwaysShowSend
         renderBubble={renderBubble}
         renderSend={renderSendButton}
         placeholder="Type your message here..."
-        showUserAvatar
+        // showUserAvatar
+        // bottomOffset={-10}
         scrollToBottom
+        renderAvatarOnTop
+        renderUsernameOnMessage
+        onPressAvatar={console.log}
         scrollToBottomComponent={scrollToBottomComponent}
         renderLoading={renderLoading}
+        renderInputToolbar={renderInputToolbar}
+        // messagesContainerStyle={{ backgroundColor: 'indigo' }}
       />
     </View>
   );

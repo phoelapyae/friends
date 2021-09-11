@@ -16,6 +16,7 @@ const BottomSlideMenu = ({
   selectedPost,
   lists,
   onPick,
+  navigation,
   auth,
 }) => {
   const isOwner = selectedPost && selectedPost?.user?._id === auth?._id;
@@ -45,6 +46,7 @@ const BottomSlideMenu = ({
               ]}
               key={menu.id}
               onPress={() => {
+                navigation.navigate(menu.route, {id: selectedPost._id});
                 onChange(!visible);
               }}>
               <Ionicons name={menu.icon} color="#000" size={20} />

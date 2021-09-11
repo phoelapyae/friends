@@ -44,6 +44,9 @@ export default StyleSheet.create({
   mb8: {
     marginBottom: 8,
   },
+  mb4: {
+    marginBottom: 4,
+  },
   mb12: {
     marginBottom: 12,
   },
