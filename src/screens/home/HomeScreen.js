@@ -65,7 +65,9 @@ const HomeScreen = ({navigation}) => {
           </React.Fragment>
         ) : isError ? (
           <View style={styles.errorLayout}>
-            <Text style={globalStyles.errorText}>There was an error</Text>
+            <Text style={globalStyles.errorText}>
+              There was an error. Turn wifi or VPN on and off.
+            </Text>
           </View>
         ) : (
           <ScrollView

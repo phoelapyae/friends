@@ -17,8 +17,12 @@ import gStyles from '@/theme';
 import Uploader from '@components/Uploader';
 import {storyStore} from '@store/storyStore';
 import shallow from 'zustand/shallow';
+import {useQuery} from 'react-query';
+import {fetchProfile} from '@hooks/useProfile';
+import {useMutation} from 'react-query';
+import friends from '@api/index';
 
-const CurrentUserProfile = () => {
+const CurrentUserProfile = ({me}) => {
   return (
     <View
       style={[
@@ -26,12 +30,20 @@ const CurrentUserProfile = () => {
         globalStyles.justifyFlexStart,
         globalStyles.mv10,
       ]}>
-      <Image
-        source={{
-          uri: 'https://envato-shoebox-0.imgix.net/8f00/9244-65d5-4144-8e64-a1c87e927e5e/DSC02545.jpg?auto=compress%2Cformat&fit=max&mark=https%3A%2F%2Felements-assets.envato.com%2Fstatic%2Fwatermark2.png&markalign=center%2Cmiddle&markalpha=18&w=500&s=bc2097abaf77d272ba8d3d84cae417f5',
-        }}
-        style={globalStyles.avatarMd}
-      />
+      {me.avatar ? (
+        <Image
+          source={{
+            uri: me.avatar,
+          }}
+          style={globalStyles.avatarSm}
+        />
+      ) : (
+        <Image
+          source={require('@assets/images/default-profile-image.png')}
+          style={globalStyles.avatarSm}
+        />
+      )}
+
       <View
         style={[
           globalStyles.flexColumn,
@@ -39,7 +51,7 @@ const CurrentUserProfile = () => {
           globalStyles.flexRowJustifyCenter,
         ]}>
         <Text style={[globalStyles.themeTextBold, globalStyles.lgText]}>
-          Nay Yaung Lin Lakk
+          {me.fullName}
         </Text>
       </View>
     </View>
@@ -47,21 +59,24 @@ const CurrentUserProfile = () => {
 };
 
 const StoryCreateScreen = ({navigation}) => {
-  const [createStory, loading] = storyStore(
-    state => [state.createStory, state.loading],
-    shallow,
+  const mutation = useMutation(storyPayload =>
+    friends.post('/story/create', storyPayload),
+  );
+  const {isLoading: profileLoading, data: me} = useQuery(
+    'profile',
+    fetchProfile,
   );
   const [content, setContent] = useState('');
-
+  const [image, setImage] = useState('');
   const onSubmitStory = async () => {
     const payload = {content};
-    await createStory(payload)
-      .then(() => {
-        ToastAndroid.show('Story Created Successfully', ToastAndroid.SHORT);
-      })
-      .catch(e => {
-        ToastAndroid.show('Posting Story Failed!', ToastAndroid.SHORT);
-      });
+    try {
+      await mutation.mutateAsync(payload);
+    } catch (error) {
+      ToastAndroid.show('Posting Story Failed!', ToastAndroid.SHORT);
+    } finally {
+      ToastAndroid.show('Story Created Successfully', ToastAndroid.SHORT);
+    }
   };
 
   const hasNull = () => {
@@ -91,7 +106,7 @@ const StoryCreateScreen = ({navigation}) => {
           style={!hasNull() ? styles.disableBtn : styles.submitBtn}
           disabled={!hasNull()}
           onPress={onSubmitStory}>
-          {loading ? (
+          {mutation.isLoading ? (
             <ActivityIndicator size="small" color="#fff" />
           ) : (
             <Text style={styles.btnText}>POST</Text>
@@ -99,11 +114,14 @@ const StoryCreateScreen = ({navigation}) => {
         </TouchableOpacity>
       </View>
       {/* Header */}
-
       {/* Body */}
       <View style={styles.container}>
         <ScrollView showsVerticalScrollIndicator={false}>
-          <CurrentUserProfile />
+          {profileLoading ? (
+            <Text>Loading...</Text>
+          ) : (
+            <CurrentUserProfile me={me} />
+          )}
           <TextInput
             placeholder="Write down your story..."
             multiline
@@ -114,9 +132,12 @@ const StoryCreateScreen = ({navigation}) => {
             onChangeText={txt => setContent(txt)}
           />
           <Uploader
+            multiple={false}
             onPick={files => {
-              console.log(files);
+              console.log('files');
             }}
+            setImage={setImage}
+            image={image}
           />
         </ScrollView>
       </View>

@@ -70,6 +70,11 @@ export default StyleSheet.create({
   themeColorText: {
     color: gTheme.primaryColor,
   },
+  avatarSm: {
+    width: 38,
+    height: 38,
+    borderRadius: 100,
+  },
   // avatar
   avatarMd: {
     width: 50,
