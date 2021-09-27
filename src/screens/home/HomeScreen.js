@@ -15,8 +15,7 @@ import globalStyles from '@styles/globalStyles';
 import StorySkeleton from '@components/skeleton/StorySkeleton';
 
 import {useQuery} from 'react-query';
-import {fetchStories} from '@hooks/useStory';
-import {fetchProfile} from '@hooks/useProfile';
+import {fetchStories, fetchProfile} from '@libs/query';
 
 const HomeScreen = ({navigation}) => {
   const {

@@ -15,12 +15,10 @@ import globalStyles from '@styles/globalStyles';
 import Icon from 'react-native-vector-icons/Ionicons';
 import gStyles from '@/theme';
 import Uploader from '@components/Uploader';
-import {storyStore} from '@store/storyStore';
-import shallow from 'zustand/shallow';
 import {useQuery} from 'react-query';
-import {fetchProfile} from '@hooks/useProfile';
+import {fetchProfile} from '@libs/query';
 import {useMutation} from 'react-query';
-import friends from '@api/index';
+import {createStory} from '@libs/mutation';
 
 const CurrentUserProfile = ({me}) => {
   return (
@@ -59,24 +57,24 @@ const CurrentUserProfile = ({me}) => {
 };
 
 const StoryCreateScreen = ({navigation}) => {
-  const mutation = useMutation(storyPayload =>
-    friends.post('/story/create', storyPayload),
-  );
+  const {isLoading, error, mutate} = useMutation(createStory, {
+    onSuccess: () => {
+      ToastAndroid.show('Story Created Successfully', ToastAndroid.SHORT);
+    },
+    onError: () => {
+      ToastAndroid.show('Posting Story Failed!', ToastAndroid.SHORT);
+    },
+  });
+
   const {isLoading: profileLoading, data: me} = useQuery(
     'profile',
     fetchProfile,
   );
+
   const [content, setContent] = useState('');
   const [image, setImage] = useState('');
   const onSubmitStory = async () => {
-    const payload = {content};
-    try {
-      await mutation.mutateAsync(payload);
-    } catch (error) {
-      ToastAndroid.show('Posting Story Failed!', ToastAndroid.SHORT);
-    } finally {
-      ToastAndroid.show('Story Created Successfully', ToastAndroid.SHORT);
-    }
+    mutate(content);
   };
 
   const hasNull = () => {
@@ -106,7 +104,7 @@ const StoryCreateScreen = ({navigation}) => {
           style={!hasNull() ? styles.disableBtn : styles.submitBtn}
           disabled={!hasNull()}
           onPress={onSubmitStory}>
-          {mutation.isLoading ? (
+          {isLoading ? (
             <ActivityIndicator size="small" color="#fff" />
           ) : (
             <Text style={styles.btnText}>POST</Text>

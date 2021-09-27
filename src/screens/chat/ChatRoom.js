@@ -18,12 +18,12 @@ import {
   renderInputToolbar,
 } from '@elements/ChatElements';
 import {useQuery} from 'react-query';
-import {fetchProfile} from '@hooks/useProfile';
+import {fetchProfile} from '@libs/query';
 
 const ChatRoom = ({navigation}) => {
   const socketRef = useRef();
   const [chatTexts, setChatTexts] = useState([]);
-
+  const [activeUsers, setActiveUsers] = useState([]);
   const {
     isLoading: profileLoading,
     isError: profileError,
@@ -31,9 +31,8 @@ const ChatRoom = ({navigation}) => {
   } = useQuery('profile', fetchProfile);
 
   useEffect(() => {
-    const roomId = 1;
     socketRef.current = io('https://friendsmm.herokuapp.com', {
-      query: {roomId},
+      query: `userId=${me?._id}`,
       secure: true,
       reconnection: true,
       rejectUnauthorized: false,
@@ -41,8 +40,21 @@ const ChatRoom = ({navigation}) => {
     });
 
     socketRef.current.on('connect', function () {
-      console.log('connect');
       socketRef.current.emit('room', roomId);
+    });
+
+    socketRef.current.on('users', users => {
+      users.forEach(user => {
+        user.self = user.userID === socketId.id;
+        setActiveUsers(user);
+      });
+      // put the current user first, and then sort by username
+      this.users = users.sort((a, b) => {
+        if (a.self) return -1;
+        if (b.self) return 1;
+        if (a.username < b.username) return -1;
+        return a.username > b.username ? 1 : 0;
+      });
     });
 
     // event://init-message

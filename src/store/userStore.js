@@ -1,5 +1,5 @@
 import create from 'zustand';
-import friends from '../api';
+import friends from '@libs/apis';
 
 export const userStore = create(set => ({
   me: {},

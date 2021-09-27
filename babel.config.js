@@ -6,12 +6,11 @@ module.exports = {
       {
         root: ['./src'],
         alias: {
-          '@api': './src/api',
+          '@libs': './src/libs',
           '@components': './src/components',
           '@screens': './src/screens',
           '@store': './src/store',
           '@assets': './src/assets',
-          '@hooks': './src/hooks',
           '@elements': './src/elements',
           '@utils': './src/utils',
           '@styles': './src/styles',

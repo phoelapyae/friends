@@ -1,6 +1,6 @@
 import create from 'zustand';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import friends from '../api';
+import friends from '@libs/apis';
 import {
   AccessToken,
   GraphRequest,

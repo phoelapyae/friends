@@ -15,7 +15,7 @@ import {userStore} from '@store/userStore';
 import {Formik} from 'formik';
 import gStyles from '@/theme';
 import {useQuery} from 'react-query';
-import {fetchProfile} from '@hooks/useProfile';
+import {fetchProfile} from '@libs/query';
 
 const ProfileEdit = ({navigation}) => {
   const updateProfile = userStore(state => state.updateProfile);

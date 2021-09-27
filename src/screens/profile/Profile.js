@@ -12,7 +12,7 @@ import globalStyles from '@styles/globalStyles';
 import StoryCard from '@components/story/StoryCard';
 import gTheme from '@/theme';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {useAuth} from '@hooks/useAuth';
+import {useAuth} from '@libs/useAuth';
 import Menu, {
   MenuOptions,
   MenuOption,
@@ -20,8 +20,7 @@ import Menu, {
   renderers,
 } from 'react-native-popup-menu';
 import {useQuery} from 'react-query';
-import {fetchStories} from '@hooks/useStory';
-import {fetchProfile} from '@hooks/useProfile';
+import {fetchStories, fetchProfile} from '@libs/query';
 
 const {SlideInMenu} = renderers;
 

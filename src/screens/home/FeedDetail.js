@@ -11,7 +11,7 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import globalStyles from '@styles/globalStyles';
 import {useQuery} from 'react-query';
-import {fetchStoryById} from '@hooks/useStory';
+import {fetchStoryById} from '@libs/query';
 
 const FeedDetail = ({route, navigation}) => {
   const {id, me} = route.params;

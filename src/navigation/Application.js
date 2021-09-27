@@ -5,7 +5,7 @@ import {StatusBar, SafeAreaView, StyleSheet} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {NonAuthRoutes, BottomAuthRoutes, AuthStackRoutes} from './routes';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {useAuth} from '@hooks/useAuth';
+import {useAuth} from '@libs/useAuth';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();

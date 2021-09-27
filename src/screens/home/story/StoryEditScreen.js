@@ -16,8 +16,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import gStyles from '@/theme';
 import Uploader from '@components/Uploader';
 import {useQuery} from 'react-query';
-import {fetchStoryById} from '@hooks/useStory';
-import {fetchProfile} from '@hooks/useProfile';
+import {fetchStoryById, fetchProfile} from '@libs/query';
 
 const CurrentUserProfile = ({me}) => {
   return (
