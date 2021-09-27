@@ -27,6 +27,7 @@ export default ({onPick, multiple, image, setImage}) => {
       } else {
         onPick(base64Images[0]);
       }
+      console.log(base64Images[0]);
       setImage(base64Images[0] ?? null);
     }
   }
@@ -91,5 +92,6 @@ const styles = StyleSheet.create({
     height: 200,
     width: '100%',
     borderRadius: 15,
+    resizeMode: 'cover',
   },
 });
