@@ -1,8 +1,7 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {
   StyleSheet,
   View,
-  Text,
   StatusBar,
   ScrollView,
   TouchableOpacity,
@@ -13,11 +12,15 @@ import gStyles from '@/theme';
 import Icon from 'react-native-vector-icons/Ionicons';
 import globalStyles from '@styles/globalStyles';
 import StorySkeleton from '@components/skeleton/StorySkeleton';
+import {ThemeContext} from '@/libs/ThemeProvider';
+import {Text, Box, Avatar, HStack} from 'native-base';
 
 import {useQuery} from 'react-query';
 import {fetchStories, fetchProfile} from '@libs/query';
 
 const HomeScreen = ({navigation}) => {
+  const {dark, theme, toggle} = useContext(ThemeContext);
+
   const {
     isLoading,
     isError,
@@ -40,21 +43,24 @@ const HomeScreen = ({navigation}) => {
   }, []);
 
   return (
-    <View style={styles.root}>
-      <StatusBar barStyle="dark-content" backgroundColor="white" />
-      <View
-        style={[
-          styles.header,
-          globalStyles.justifySpaceBetween,
-          globalStyles.flexRow,
-        ]}>
-        <Text style={[globalStyles.themeTextBold, globalStyles.lgText]}>
-          Friends
-        </Text>
+    <Box flex={1} bg={theme.secondaryColor}>
+      <StatusBar
+        animated
+        barStyle={dark ? 'light-content' : 'dark-content'}
+        backgroundColor={theme.backgroundColor}
+      />
+      <Box
+        bg={theme.backgroundColor}
+        flexDir="row"
+        alignItems="center"
+        justifyContent="space-between"
+        px={2}
+        py={4}>
+        <Text color={theme.color}> Friends</Text>
         <TouchableOpacity>
-          <Icon name="md-notifications-outline" color="#333" size={20} />
+          <Icon name="md-notifications-outline" color={theme.color} size={20} />
         </TouchableOpacity>
-      </View>
+      </Box>
       <View style={styles.container}>
         {isLoading && profileLoading ? (
           <React.Fragment>
@@ -85,15 +91,11 @@ const HomeScreen = ({navigation}) => {
           <Icon name="md-add" size={30} color="white" />
         </TouchableOpacity>
       </View>
-    </View>
+    </Box>
   );
 };
 
 const styles = StyleSheet.create({
-  root: {
-    flex: 1,
-    backgroundColor: '#f0f2f5',
-  },
   header: {
     flexDirection: 'row',
     paddingHorizontal: 12,

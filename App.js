@@ -3,11 +3,11 @@ import React, {useEffect} from 'react';
 import ApplicationNavigator from '@/navigation/Application';
 import {LogBox, Platform} from 'react-native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
-import {MenuProvider} from 'react-native-popup-menu';
 import {QueryClient, QueryClientProvider} from 'react-query';
 import Geolocation from 'react-native-geolocation-service';
 import {check, PERMISSIONS, RESULTS, request} from 'react-native-permissions';
 import {NativeBaseProvider} from 'native-base';
+import {ThemeProvider} from '@/libs/ThemeProvider';
 
 LogBox.ignoreLogs([
   'VirtualizedLists should never be nested',
@@ -73,11 +73,11 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <SafeAreaProvider>
-        <NativeBaseProvider>
-          <MenuProvider>
+        <ThemeProvider>
+          <NativeBaseProvider>
             <ApplicationNavigator />
-          </MenuProvider>
-        </NativeBaseProvider>
+          </NativeBaseProvider>
+        </ThemeProvider>
       </SafeAreaProvider>
     </QueryClientProvider>
   );

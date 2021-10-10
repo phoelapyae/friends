@@ -1,13 +1,11 @@
-import React, {useState} from 'react';
-import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
-import gStyles from '@/theme';
+import React, {useState, useContext} from 'react';
+import {View, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import EntypoIcon from 'react-native-vector-icons/Entypo';
 import moment from 'moment';
 import {teaser} from '@utils/index';
-import globalStyles from '@styles/globalStyles';
 import BottomSlideMenu from '@components/BottomSlideMenu';
-import {EditPencilSvg} from '@assets/svg';
+import {Text, Box, Image, Avatar} from 'native-base';
+import {ThemeContext} from '@/libs/ThemeProvider';
 
 /**
  * This Component is used in homescreen as story card
@@ -15,64 +13,7 @@ import {EditPencilSvg} from '@assets/svg';
 const StoryCard = ({navigation, stories, me}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedPost, setSelectedPost] = useState({});
-
-  const renderFirstReactBtn = reactType => {
-    switch (reactType.type) {
-      case 'love':
-        return (
-          <TouchableOpacity style={[styles.flexRow, styles.loveReactionBtn]}>
-            <Icon name="ios-heart" size={17} color="white" />
-
-            <Text style={styles.reactBtnText}>100</Text>
-          </TouchableOpacity>
-        );
-      case 'wow':
-        return (
-          <TouchableOpacity style={[styles.flexRow, styles.starReactionBtn]}>
-            <Icon name="md-star" size={17} color="white" />
-
-            <Text style={styles.reactBtnText}>36</Text>
-          </TouchableOpacity>
-        );
-      case 'peaceful':
-        return (
-          <TouchableOpacity style={[styles.flexRow, styles.LinkReactionBtn]}>
-            <EntypoIcon name="emoji-flirt" size={17} color="white" />
-
-            <Text style={styles.reactBtnText}>36</Text>
-          </TouchableOpacity>
-        );
-    }
-  };
-
-  const renderSecondReactBtn = reactType => {
-    switch (reactType.type) {
-      case 'love':
-        return (
-          <TouchableOpacity style={[styles.flexRow, styles.secondaryReactBtn]}>
-            <Icon name="ios-heart" size={17} color="red" />
-
-            <Text style={styles.secondaryReactBtnText}>{reactType.count}</Text>
-          </TouchableOpacity>
-        );
-      case 'wow':
-        return (
-          <TouchableOpacity style={[styles.flexRow, styles.secondaryReactBtn]}>
-            <Icon name="md-star" size={17} color="#fbba08" />
-
-            <Text style={styles.secondaryReactBtnText}>36</Text>
-          </TouchableOpacity>
-        );
-      case 'peaceful':
-        return (
-          <TouchableOpacity style={[styles.flexRow, styles.secondaryReactBtn]}>
-            <EntypoIcon name="emoji-flirt" size={17} color="#3972d3" />
-
-            <Text style={styles.secondaryReactBtnText}>36</Text>
-          </TouchableOpacity>
-        );
-    }
-  };
+  const {dark, theme, toggle} = useContext(ThemeContext);
 
   const lists = [
     {
@@ -99,51 +40,35 @@ const StoryCard = ({navigation, stories, me}) => {
     <React.Fragment>
       {stories &&
         stories.map(story => (
-          <View key={story._id} style={styles.card}>
-            <View
-              style={[
-                styles.profileRow,
-                globalStyles.flexRow,
-                globalStyles.justifySpaceBetween,
-                globalStyles.flexRowAlignCenter,
-              ]}>
-              <View
-                style={[globalStyles.flexRow, globalStyles.justifyFlexStart]}>
+          <Box key={story._id} bg={theme.backgroundColor} mb={4}>
+            <Box
+              flexDir="row"
+              alignItems="center"
+              justifyContent="space-between"
+              m={3}>
+              <Box flexDir="row" alignItems="center">
                 {story.user.avatar ? (
-                  <Image
+                  <Avatar
                     source={{
                       uri: story.user.avatar,
                     }}
-                    style={styles.avatar}
+                    size="md"
                   />
                 ) : (
-                  <Image
+                  <Avatar
                     source={require('@assets/images/default-profile-image.png')}
-                    style={styles.avatar}
+                    size="md"
                   />
                 )}
-
-                <View
-                  style={[
-                    globalStyles.flexColumn,
-                    globalStyles.ml8,
-                    globalStyles.flexRowJustifyCenter,
-                  ]}>
-                  <TouchableOpacity>
-                    <Text
-                      style={[globalStyles.themeTextBold, globalStyles.mdText]}>
-                      {story.user.fullName}
-                    </Text>
-                  </TouchableOpacity>
-
-                  <Text style={styles.dateTimeText}>
+                <Box ml={3} flexDir="column">
+                  <Text color={theme.color}>{story.user.fullName}</Text>
+                  <Text color={theme.secondaryText}>
                     {moment(story.createdAt).fromNow()}
                   </Text>
-                </View>
-              </View>
+                </Box>
+              </Box>
 
               {/* Bottom Slide up menu for profile */}
-
               <TouchableOpacity
                 onPress={() => {
                   setModalVisible(true);
@@ -151,49 +76,28 @@ const StoryCard = ({navigation, stories, me}) => {
                 }}>
                 <Icon name="md-ellipsis-vertical" color="#333" size={19} />
               </TouchableOpacity>
-            </View>
+            </Box>
 
             {story.coverPhoto && (
-              <View style={styles.cardImgProvider}>
-                <Image
-                  source={{uri: story.coverPhoto}}
-                  style={styles.cardImg}
-                />
-              </View>
+              <Image source={{uri: story.coverPhoto}} size="md" />
             )}
 
-            <View style={styles.content}>
-              <Text style={styles.contentText}>
-                {teaser(story.content, 30, '...')}
-              </Text>
-            </View>
+            <Text color={dark ? '#fff' : '#000'} p={4}>
+              {teaser(story.content, 30, '...')}
+            </Text>
 
-            <View style={styles.reactionRow}>
-              {/* <View style={styles.flexRow}>
-                {story.reaction[0] && renderFirstReactBtn(story.reaction[0])}
-                {story.reaction[1] && renderSecondReactBtn(story.reaction[1])}
-              </View> */}
-              <View style={styles.flexRow}>
-                {renderFirstReactBtn({type: 'love'})}
-                {renderSecondReactBtn({type: 'wow'})}
-                <TouchableOpacity
-                  style={[styles.flexRow, styles.secondaryReactBtn]}>
-                  <Icon name="md-add" size={17} color="#3b5998" />
-                </TouchableOpacity>
-              </View>
+            <Box px={2} py={4}>
               <TouchableOpacity
-                style={styles.visitBtn}
                 onPress={() =>
                   navigation.navigate('FeedDetailScreen', {
                     id: story._id,
                     me,
                   })
                 }>
-                <Text style={styles.visitText}>View</Text>
-                <Icon name="chevron-forward" size={17} color="#333" />
+                <Text color={theme.color}>View</Text>
               </TouchableOpacity>
-            </View>
-          </View>
+            </Box>
+          </Box>
         ))}
 
       <BottomSlideMenu
@@ -210,120 +114,4 @@ const StoryCard = ({navigation, stories, me}) => {
   );
 };
 
-const styles = StyleSheet.create({
-  card: {
-    backgroundColor: '#fff',
-    marginBottom: 10,
-  },
-  avatar: {
-    width: 40,
-    height: 40,
-    borderRadius: 100,
-  },
-  profileRow: {
-    marginVertical: 12,
-    paddingHorizontal: 20,
-  },
-  profile: {
-    marginLeft: 8,
-  },
-  cardImgProvider: {
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 20,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 100,
-    elevation: 10,
-    paddingHorizontal: 20,
-  },
-  cardImg: {
-    width: '100%',
-    height: 200,
-    resizeMode: 'cover',
-    borderRadius: 20,
-  },
-  content: {
-    paddingVertical: 12,
-    paddingHorizontal: 20,
-  },
-
-  fullName: {
-    fontFamily: 'Nunito-Bold',
-    fontSize: 16,
-  },
-  dateTimeText: {
-    fontFamily: 'Nunito-Light',
-    color: '#333',
-    opacity: 0.7,
-  },
-  contentText: {
-    fontFamily: 'Nunito-Regular',
-  },
-
-  reactionRow: {
-    paddingHorizontal: 12,
-    marginBottom: 12,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  flexRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  LinkReactionBtn: {
-    backgroundColor: '#3972d3',
-    borderRadius: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-  },
-  reactBtnText: {
-    color: 'white',
-    fontFamily: 'Nunito-Bold',
-    paddingLeft: 8,
-  },
-  secondaryReactBtn: {
-    backgroundColor: 'white',
-    borderRadius: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    marginLeft: 6,
-  },
-  secondaryReactBtnText: {
-    color: gStyles.primaryColor,
-    fontFamily: 'Nunito-Bold',
-    paddingLeft: 8,
-  },
-  visitBtn: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  visitText: {
-    fontFamily: 'Nunito-Regular',
-  },
-
-  // reaction
-  starReactionBtn: {
-    backgroundColor: '#fbba08',
-    borderRadius: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: 60,
-    height: 26,
-  },
-  loveReactionBtn: {
-    backgroundColor: '#F36B7E',
-    borderRadius: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: 60,
-    height: 26,
-  },
-});
 export default StoryCard;

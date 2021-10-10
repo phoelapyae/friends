@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useContext} from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
 import {StatusBar, SafeAreaView, StyleSheet} from 'react-native';
@@ -6,6 +6,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {NonAuthRoutes, BottomAuthRoutes, AuthStackRoutes} from './routes';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {useAuth} from '@libs/useAuth';
+import {ThemeContext} from '@/libs/ThemeProvider';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -33,12 +34,16 @@ const screenOptions = (route, color) => {
 };
 
 function HomeScreenTabs() {
+  const {dark, theme, toggle} = useContext(ThemeContext);
+
   return (
     <Tab.Navigator
       screenOptions={({route}) => ({
         headerShown: false,
         tabBarShowLabel: false,
-
+        tabBarStyle: {
+          backgroundColor: theme.backgroundColor,
+        },
         tabBarIcon: ({color}) => screenOptions(route, color),
       })}>
       {BottomAuthRoutes &&
@@ -54,11 +59,12 @@ function HomeScreenTabs() {
 }
 
 const Application = () => {
+
   const {authState} = useAuth();
   return (
     <NavigationContainer>
       <SafeAreaView style={styles.container}>
-        <StatusBar barStyle="dark-content" backgroundColor="white" />
+       
         <Stack.Navigator
           screenOptions={{
             headerShown: false,
