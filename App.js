@@ -7,6 +7,7 @@ import {MenuProvider} from 'react-native-popup-menu';
 import {QueryClient, QueryClientProvider} from 'react-query';
 import Geolocation from 'react-native-geolocation-service';
 import {check, PERMISSIONS, RESULTS, request} from 'react-native-permissions';
+import {NativeBaseProvider} from 'native-base';
 
 LogBox.ignoreLogs([
   'VirtualizedLists should never be nested',
@@ -72,9 +73,11 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <SafeAreaProvider>
-        <MenuProvider>
-          <ApplicationNavigator />
-        </MenuProvider>
+        <NativeBaseProvider>
+          <MenuProvider>
+            <ApplicationNavigator />
+          </MenuProvider>
+        </NativeBaseProvider>
       </SafeAreaProvider>
     </QueryClientProvider>
   );
