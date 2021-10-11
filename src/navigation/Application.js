@@ -7,11 +7,12 @@ import {NonAuthRoutes, BottomAuthRoutes, AuthStackRoutes} from './routes';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {useAuth} from '@libs/useAuth';
 import {ThemeContext} from '@/libs/ThemeProvider';
+import gStyles from '@/theme';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
-const screenOptions = (route, color) => {
+const screenOptions = (route, color, focused) => {
   let iconName;
   switch (route.name) {
     case 'HomeScreen':
@@ -30,7 +31,7 @@ const screenOptions = (route, color) => {
       break;
   }
 
-  return <Icon name={iconName} color={color} size={24} />;
+  return <Icon name={iconName} color={focused ? gStyles.primaryColor : color} size={24} />;
 };
 
 function HomeScreenTabs() {
@@ -44,7 +45,7 @@ function HomeScreenTabs() {
         tabBarStyle: {
           backgroundColor: theme.backgroundColor,
         },
-        tabBarIcon: ({color}) => screenOptions(route, color),
+        tabBarIcon: ({color, focused}) => screenOptions(route, color, focused),
       })}>
       {BottomAuthRoutes &&
         BottomAuthRoutes.map(bRoute => (

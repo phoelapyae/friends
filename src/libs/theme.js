@@ -7,7 +7,7 @@ export const themes = {
   },
   light: {
     backgroundColor: 'white',
-    secondaryColor: '#fff',
+    secondaryColor: '#f0f2f5',
     color: 'black',
     secondaryText: '#b0b3b8',
   },

@@ -66,7 +66,7 @@ const BottomSlideMenu = ({
   };
   return (
     <Modal
-      animationType="slide"
+      animationType="fade"
       transparent={true}
       backgroundColor="rgba(0, 0, 0, 0.5)"
       visible={visible}

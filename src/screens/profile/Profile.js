@@ -76,7 +76,7 @@ const Profile = ({navigation}) => {
             alignItems="center"
             justifyContent="space-between">
             <HStack>
-              <Icon name={item.icon} size={22} color={dark ? '#fff' : '#000'} />
+              <Icon name={item.icon} size={22} color={dark ? '#fff' : 'gray'} />
               <Text pl={3} color={dark ? '#fff' : '#000'}>
                 {item.name}
               </Text>

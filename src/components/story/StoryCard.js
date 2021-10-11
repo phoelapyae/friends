@@ -1,5 +1,5 @@
 import React, {useState, useContext} from 'react';
-import {View, TouchableOpacity} from 'react-native';
+import {TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import moment from 'moment';
 import {teaser} from '@utils/index';
@@ -56,14 +56,14 @@ const StoryCard = ({navigation, stories, me}) => {
                   />
                 ) : (
                   <Avatar
-                    source={require('@assets/images/default-profile-image.png')}
+                    source={require('@assets/images/profile.png')}
                     size="md"
                   />
                 )}
                 <Box ml={3} flexDir="column">
                   <Text color={theme.color}>{story.user.fullName}</Text>
                   <Text color={theme.secondaryText}>
-                    {moment(story.createdAt).fromNow()}
+                    {moment(story.createdAt).format('MMM D [,] h:mm a ')}
                   </Text>
                 </Box>
               </Box>
@@ -74,29 +74,31 @@ const StoryCard = ({navigation, stories, me}) => {
                   setModalVisible(true);
                   setSelectedPost(story);
                 }}>
-                <Icon name="md-ellipsis-vertical" color="#333" size={19} />
+                <Icon name="md-ellipsis-vertical" color={theme.color} size={19} />
               </TouchableOpacity>
             </Box>
-
-            {story.coverPhoto && (
-              <Image source={{uri: story.coverPhoto}} size="md" />
+            {story.coverPhoto ? (
+              <Image
+                source={{uri: story.coverPhoto}}
+                size="2xl"
+                width="full"
+                alt={`${story._id}-image`}
+              />
+            ) : (
+              <Box />
             )}
 
-            <Text color={dark ? '#fff' : '#000'} p={4}>
-              {teaser(story.content, 30, '...')}
-            </Text>
-
-            <Box px={2} py={4}>
-              <TouchableOpacity
-                onPress={() =>
-                  navigation.navigate('FeedDetailScreen', {
-                    id: story._id,
-                    me,
-                  })
-                }>
-                <Text color={theme.color}>View</Text>
-              </TouchableOpacity>
-            </Box>
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate('FeedDetailScreen', {
+                  id: story._id,
+                  me,
+                })
+              }>
+              <Text color={dark ? '#fff' : '#000'} p={4} noOfLines={3}>
+                {story.content}
+              </Text>
+            </TouchableOpacity>
           </Box>
         ))}
 

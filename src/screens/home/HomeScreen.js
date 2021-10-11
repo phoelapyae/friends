@@ -56,7 +56,7 @@ const HomeScreen = ({navigation}) => {
         justifyContent="space-between"
         px={2}
         py={4}>
-        <Text color={theme.color}> Friends</Text>
+        <Text color={theme.color} fontSize="lg"> Friends</Text>
         <TouchableOpacity>
           <Icon name="md-notifications-outline" color={theme.color} size={20} />
         </TouchableOpacity>
