@@ -1,24 +1,31 @@
-import React, {useRef, useState} from 'react';
+import React, {useRef, useState, useContext} from 'react';
 import {
-  StyleSheet,
-  View,
-  Text,
   StatusBar,
   TouchableOpacity,
   ScrollView,
-  TextInput,
   ActivityIndicator,
 } from 'react-native';
-import globalStyles from '@styles/globalStyles';
-import Icon from 'react-native-vector-icons/Ionicons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import {userStore} from '@store/userStore';
 import {Formik} from 'formik';
-import gStyles from '@/theme';
 import {useQuery} from 'react-query';
 import {fetchProfile} from '@libs/query';
+import {
+  Text,
+  Box,
+  Icon,
+  HStack,
+  Input,
+  FormControl,
+  TextArea,
+  VStack,
+  Button,
+} from 'native-base';
+import {ThemeContext} from '@/libs/ThemeProvider';
 
 const ProfileEdit = ({navigation}) => {
   const updateProfile = userStore(state => state.updateProfile);
+  const {dark, theme} = useContext(ThemeContext);
 
   const {
     isLoading: profileLoading,
@@ -38,39 +45,41 @@ const ProfileEdit = ({navigation}) => {
   };
 
   return (
-    <View style={styles.root}>
-      <StatusBar barStyle="dark-content" backgroundColor="white" />
-      <View
-        style={[
-          styles.header,
-          globalStyles.justifySpaceBetween,
-          globalStyles.flexRowAlignCenter,
-          globalStyles.flexRow,
-        ]}>
-        <View style={[globalStyles.flexRowAlignCenter, globalStyles.flexRow]}>
+    <Box flex={1} bg={theme.backgroundColor}>
+      <StatusBar
+        animated
+        barStyle={dark ? 'light-content' : 'dark-content'}
+        backgroundColor={theme.backgroundColor}
+      />
+      <Box
+        bg={theme.backgroundColor}
+        flexDir="row"
+        alignItems="center"
+        justifyContent="space-between"
+        px={2}>
+        <HStack alignItems="center">
           <TouchableOpacity onPress={() => navigation.goBack(null)}>
-            <Icon name="md-chevron-back" color="#333" size={20} />
+            <Ionicons name="md-chevron-back" color={theme.color} size={20} />
           </TouchableOpacity>
+
           <Text
-            style={[
-              globalStyles.themeTextBold,
-              globalStyles.lgText,
-              globalStyles.ml8,
-            ]}>
+            color={theme.color}
+            fontSize="lg"
+            pl={2}
+            fontFamily="Nunito-SemiBold">
             Profile Edit
           </Text>
-        </View>
-        <TouchableOpacity
-          style={styles.submitBtn}
-          onPress={() => handleSubmit()}>
+        </HStack>
+
+        <Button size="sm" variant="subtle" onPress={() => handleSubmit()}>
           {formLoading ? (
             <ActivityIndicator size="small" color="#fff" />
           ) : (
-            <Text style={styles.btnText}>POST</Text>
+            <Text>POST</Text>
           )}
-        </TouchableOpacity>
-      </View>
-      <View style={styles.container}>
+        </Button>
+      </Box>
+      <Box px={2} mt={6}>
         {profileLoading ? (
           <Text>Loading</Text>
         ) : (
@@ -90,108 +99,60 @@ const ProfileEdit = ({navigation}) => {
                 } catch (error) {}
               }}>
               {({handleChange, handleBlur, values, errors, touched}) => (
-                <View>
-                  <View style={styles.inputField}>
-                    <TextInput
-                      name="fullName"
-                      placeholder="fullName"
-                      style={styles.input}
-                      onChangeText={handleChange('fullName')}
-                      onBlur={handleBlur('fullName')}
-                      value={values.fullName}
-                    />
-                    {errors.fullName && touched.fullName && (
-                      <Text style={styles.errorText}>{errors.fullName}</Text>
-                    )}
-                  </View>
-                  <View style={styles.inputField}>
-                    <TextInput
-                      editable={false}
-                      selectTextOnFocus={false}
-                      name="email"
-                      placeholder="Email"
-                      style={styles.input}
-                      onChangeText={handleChange('email')}
-                      onBlur={handleBlur('email')}
-                      value={values.email}
-                    />
+                <VStack>
+                  <Input
+                    variant="underlined"
+                    placeholder="Full Name"
+                    mb={4}
+                    color={theme.color}
+                    value={values.fullName}
+                    InputLeftElement={
+                      <Icon
+                        as={<Ionicons name="md-person" />}
+                        size={5}
+                        ml="2"
+                        color="muted.400"
+                      />
+                    }
+                  />
 
-                    <Text style={globalStyles.infoText}>
-                      You cannot update your email.
-                    </Text>
-                  </View>
-                  <View style={styles.inputField}>
-                    <TextInput
-                      name="bio"
-                      multiline
-                      numberOfLines={1}
-                      placeholder="About yourself"
-                      style={styles.input}
-                      onChangeText={handleChange('bio')}
-                      onBlur={handleBlur('bio')}
-                      value={values.bio}
+                  <FormControl my={4}>
+                    <Input
+                      variant="underlined"
+                      placeholder="email"
+                      value={values.email}
+                      isDisabled
+                      InputLeftElement={
+                        <Icon
+                          as={<Ionicons name="md-mail" />}
+                          size={5}
+                          ml="2"
+                          color="muted.400"
+                        />
+                      }
                     />
-                    {errors.bio && touched.bio && (
-                      <Text style={styles.errorText}>{errors.bio}</Text>
-                    )}
-                  </View>
-                </View>
+                    <FormControl.HelperText>
+                      You cannot update your mail.
+                    </FormControl.HelperText>
+                  </FormControl>
+
+                  <TextArea
+                    h={20}
+                    color={theme.color}
+                    borderWidth={0}
+                    placeholder="Text Area Placeholder"
+                    aria-label="t1"
+                    numberOfLines={4}
+                    value={values.bio}
+                  />
+                </VStack>
               )}
             </Formik>
           </ScrollView>
         )}
-      </View>
-    </View>
+      </Box>
+    </Box>
   );
 };
 
-const styles = StyleSheet.create({
-  root: {
-    flex: 1,
-    backgroundColor: '#f0f2f5',
-  },
-  header: {
-    flexDirection: 'row',
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    backgroundColor: '#fff',
-  },
-  container: {
-    flex: 1,
-    paddingHorizontal: 12,
-    backgroundColor: 'white',
-    paddingTop: 12,
-  },
-  inputField: {
-    marginVertical: 12,
-  },
-  input: {
-    borderRadius: 15,
-    borderWidth: 1,
-    borderColor: '#F0F0F0',
-    fontFamily: 'Nunito-Regular',
-    paddingLeft: 12,
-  },
-  disableBtn: {
-    backgroundColor: '#ddd',
-    borderRadius: 10,
-    height: 35,
-    width: 80,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  submitBtn: {
-    backgroundColor: gStyles.primaryColor,
-    borderRadius: 10,
-    height: 35,
-    width: 80,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  btnText: {
-    color: '#fff',
-  },
-});
 export default ProfileEdit;

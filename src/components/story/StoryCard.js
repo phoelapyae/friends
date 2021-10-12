@@ -2,9 +2,8 @@ import React, {useState, useContext} from 'react';
 import {TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import moment from 'moment';
-import {teaser} from '@utils/index';
 import BottomSlideMenu from '@components/BottomSlideMenu';
-import {Text, Box, Image, Avatar} from 'native-base';
+import {Text, Box, Image, Avatar, HStack} from 'native-base';
 import {ThemeContext} from '@/libs/ThemeProvider';
 
 /**
@@ -61,8 +60,13 @@ const StoryCard = ({navigation, stories, me}) => {
                   />
                 )}
                 <Box ml={3} flexDir="column">
-                  <Text color={theme.color}>{story.user.fullName}</Text>
-                  <Text color={theme.secondaryText}>
+                  <Text
+                    color={theme.color}
+                    fontFamily="Nunito-Bold"
+                    fontSize="md">
+                    {story.user.fullName}
+                  </Text>
+                  <Text color={theme.secondaryText} fontSize="xs">
                     {moment(story.createdAt).format('MMM D [,] h:mm a ')}
                   </Text>
                 </Box>
@@ -74,7 +78,11 @@ const StoryCard = ({navigation, stories, me}) => {
                   setModalVisible(true);
                   setSelectedPost(story);
                 }}>
-                <Icon name="md-ellipsis-vertical" color={theme.color} size={19} />
+                <Icon
+                  name="md-ellipsis-vertical"
+                  color={theme.color}
+                  size={19}
+                />
               </TouchableOpacity>
             </Box>
             {story.coverPhoto ? (
@@ -99,6 +107,55 @@ const StoryCard = ({navigation, stories, me}) => {
                 {story.content}
               </Text>
             </TouchableOpacity>
+
+            <Box
+              flexDir="row"
+              justifyContent="space-between"
+              alignItems="center"
+              p={4}>
+              <HStack space={2}>
+                <TouchableOpacity>
+                  <HStack bgColor="#F36B7E" px={2} py={1} borderRadius={20}>
+                    <Icon name="ios-heart" size={20} color="white" />
+
+                    <Text pl={1} color="white" fontFamily="Nunito-Regular">
+                      100
+                    </Text>
+                  </HStack>
+                </TouchableOpacity>
+
+                <TouchableOpacity>
+                  <HStack px={2} py={1} borderRadius={20}>
+                    <Icon name="ios-star" size={20} color="#fbba08" />
+
+                    <Text
+                      pl={1}
+                      color={theme.color}
+                      fontFamily="Nunito-Regular">
+                      25
+                    </Text>
+                  </HStack>
+                </TouchableOpacity>
+
+                <TouchableOpacity>
+                  <HStack px={2} py={1} borderRadius={100}>
+                    <Icon name="md-add" size={20} color={theme.color} />
+                  </HStack>
+                </TouchableOpacity>
+              </HStack>
+
+              <TouchableOpacity>
+                <HStack alignItems="center">
+                  <Text
+                    fontSize="md"
+                    color={theme.color}
+                    fontFamily="Nunito-Regular">
+                    view
+                  </Text>
+                  <Icon name="chevron-forward" size={17} color={theme.color} />
+                </HStack>
+              </TouchableOpacity>
+            </Box>
           </Box>
         ))}
 

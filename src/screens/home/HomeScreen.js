@@ -13,13 +13,13 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import globalStyles from '@styles/globalStyles';
 import StorySkeleton from '@components/skeleton/StorySkeleton';
 import {ThemeContext} from '@/libs/ThemeProvider';
-import {Text, Box, Avatar, HStack} from 'native-base';
+import {Text, Box, HStack} from 'native-base';
 
 import {useQuery} from 'react-query';
 import {fetchStories, fetchProfile} from '@libs/query';
 
 const HomeScreen = ({navigation}) => {
-  const {dark, theme, toggle} = useContext(ThemeContext);
+  const {dark, theme} = useContext(ThemeContext);
 
   const {
     isLoading,
@@ -56,10 +56,25 @@ const HomeScreen = ({navigation}) => {
         justifyContent="space-between"
         px={2}
         py={4}>
-        <Text color={theme.color} fontSize="lg"> Friends</Text>
-        <TouchableOpacity>
-          <Icon name="md-notifications-outline" color={theme.color} size={20} />
-        </TouchableOpacity>
+        <Text color={theme.color} fontSize="xl" fontFamily="Nunito-SemiBold">
+          Friends
+        </Text>
+        <HStack space={5}>
+          <TouchableOpacity>
+            <Icon
+              name="md-search-outline"
+              color={theme.color}
+              size={20}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <Icon
+              name="md-notifications-outline"
+              color={theme.color}
+              size={20}
+            />
+          </TouchableOpacity>
+        </HStack>
       </Box>
       <View style={styles.container}>
         {isLoading && profileLoading ? (
